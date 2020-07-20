@@ -15,6 +15,7 @@ type ActualThread = {
 
 export const AppLeftBar = () => {
   const dispatch = useDispatch();
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const opened = useSelector((state: RootState) => state.layout.opened);
   const threads = useSelector((state: RootState) => state.server.threads);
   const categories = useSelector((state: RootState) => state.server.categories);
@@ -73,11 +74,14 @@ export const AppLeftBar = () => {
           ))}
 
           <div className="font-bold">Usuarios</div>
-          {users.map((user) => (
-            <div key={user.id} className="text-center cursor-pointer py-2">
-              {user.nickname}
-            </div>
-          ))}
+          {users.map(
+            (user) =>
+              currentUser.id !== user.id && (
+                <div key={user.id} className="text-center cursor-pointer py-2">
+                  {user.nickname}
+                </div>
+              )
+          )}
         </div>
       </div>
     </AppLeftBarWrapper>

@@ -20,9 +20,7 @@ interface ChatBase {
 
 interface ChatMessage extends ChatBase {
   logType: false;
-  userId: number;
-  nickname: string;
-  avatar: string;
+  user: User;
   message: string;
 }
 
@@ -36,8 +34,7 @@ interface ChatLogCreated extends ChatLogBase {
 interface ChatLogUserJoined extends ChatLogBase {
   logType: typeof CHAT_LOG_USER_JOINED;
   payload: {
-    userId: number;
-    nickname: string;
+    user: User;
   };
 }
 
@@ -51,12 +48,6 @@ interface ThreadBase {
   messages: ChatEntry[];
 }
 
-interface ThreadMember {
-  id: number;
-  nickname: string;
-  avatar: string;
-}
-
 export interface ThreadDirect extends ThreadBase {
   type: typeof ThreadType.DIRECT_THREAD;
 }
@@ -64,7 +55,7 @@ export interface ThreadDirect extends ThreadBase {
 export interface ThreadGroup extends ThreadBase {
   type: typeof ThreadType.GROUP_THREAD;
   category: string;
-  members: ThreadMember[];
+  members: User[];
 }
 
 export type Thread = ThreadDirect | ThreadGroup;
