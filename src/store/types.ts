@@ -9,9 +9,11 @@ const CHAT_LOG_USER_JOINED = "USER_JOINED";
 interface ChatBase {
   id: number;
   timestamp: number;
+  logType: string | boolean;
 }
 
 interface ChatMessage extends ChatBase {
+  logType: false;
   userId: number;
   nickname: string;
   avatar: string;
@@ -34,13 +36,13 @@ interface ChatLogUserJoined extends ChatLogBase {
 }
 
 type ChatLog = ChatLogCreated | ChatLogUserJoined;
-type Chat = ChatMessage | ChatLog;
+export type ChatEntry = ChatMessage | ChatLog;
 
 interface ThreadBase {
   id: number;
   type: ThreadType;
   name: string;
-  messages: Chat[];
+  messages: ChatEntry[];
 }
 
 interface ThreadMember {

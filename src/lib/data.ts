@@ -12,6 +12,7 @@ export const getThreadMock = (): Thread => ({
     },
     {
       id: 6,
+      logType: false,
       userId: 3,
       message: "Hola",
       nickname: "User 3",
@@ -20,6 +21,7 @@ export const getThreadMock = (): Thread => ({
     },
     {
       id: 10,
+      logType: false,
       userId: 3,
       nickname: "User 3",
       avatar: "http://lorempixel.com/320/320/animals/3",
@@ -37,6 +39,7 @@ export const getThreadMock = (): Thread => ({
     },
     {
       id: 20,
+      logType: false,
       userId: 2,
       nickname: "User 2",
       avatar: "http://lorempixel.com/320/320/animals/2",
@@ -45,6 +48,7 @@ export const getThreadMock = (): Thread => ({
     },
     {
       id: 30,
+      logType: false,
       userId: 2,
       nickname: "User 2",
       avatar: "http://lorempixel.com/320/320/animals/2",
@@ -62,6 +66,7 @@ export const getThreadMock = (): Thread => ({
     },
     {
       id: 40,
+      logType: false,
       userId: 1,
       nickname: "User 1",
       avatar: "http://lorempixel.com/320/320/animals/1",
@@ -70,6 +75,7 @@ export const getThreadMock = (): Thread => ({
     },
     {
       id: 50,
+      logType: false,
       userId: 1,
       nickname: "User 5",
       avatar: "http://lorempixel.com/320/320/animals/5",
@@ -78,6 +84,7 @@ export const getThreadMock = (): Thread => ({
     },
     {
       id: 53,
+      logType: false,
       userId: 1,
       nickname: "User 1",
       avatar: "http://lorempixel.com/320/320/animals/1",
@@ -86,6 +93,7 @@ export const getThreadMock = (): Thread => ({
     },
     {
       id: 54,
+      logType: false,
       userId: 1,
       nickname: "User 1",
       avatar: "http://lorempixel.com/320/320/animals/1",
@@ -94,6 +102,7 @@ export const getThreadMock = (): Thread => ({
     },
     {
       id: 60,
+      logType: false,
       userId: 2,
       nickname: "User 2",
       avatar: "http://lorempixel.com/320/320/animals/2",
@@ -102,6 +111,7 @@ export const getThreadMock = (): Thread => ({
     },
     {
       id: 70,
+      logType: false,
       userId: 3,
       nickname: "User 3",
       avatar: "http://lorempixel.com/320/320/animals/3",
