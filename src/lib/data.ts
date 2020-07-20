@@ -129,6 +129,7 @@ export const getThreadsMock = (): Thread[] => [
     id: 3,
     name: "Chat 3",
     type: ThreadType.GROUP_THREAD,
+    category: "Anuncios",
     members: [],
   },
   {
@@ -136,6 +137,7 @@ export const getThreadsMock = (): Thread[] => [
     id: 4,
     name: "Chat 4",
     type: ThreadType.GROUP_THREAD,
+    category: "Entretenimiento",
     members: [],
   },
   {
@@ -143,6 +145,14 @@ export const getThreadsMock = (): Thread[] => [
     id: 5,
     name: "Chat 5",
     type: ThreadType.GROUP_THREAD,
+    category: "Entretenimiento",
     members: [],
   },
+];
+
+export const getCategoriesMock = (): string[] => [
+  "Anuncios",
+  "Ayuda",
+  "Chat",
+  "Entretenimiento",
 ];

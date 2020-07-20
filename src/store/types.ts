@@ -51,12 +51,13 @@ interface ThreadMember {
   avatar: string;
 }
 
-interface ThreadDirect extends ThreadBase {
+export interface ThreadDirect extends ThreadBase {
   type: typeof ThreadType.DIRECT_THREAD;
 }
 
-interface ThreadGroup extends ThreadBase {
+export interface ThreadGroup extends ThreadBase {
   type: typeof ThreadType.GROUP_THREAD;
+  category: string;
   members: ThreadMember[];
 }
 

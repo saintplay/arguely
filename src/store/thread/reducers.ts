@@ -1,8 +1,9 @@
 import { ThreadState, ThreadActionTypes, ADD_THREAD } from "./types";
-import { getThreadsMock } from "../../lib/data";
+import { getThreadsMock, getCategoriesMock } from "../../lib/data";
 
 const initialState: ThreadState = {
   threads: getThreadsMock(),
+  categories: getCategoriesMock(),
 };
 
 export function threadReducer(
