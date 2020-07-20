@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { createSelector } from "reselect";
 
 import styled, {
   ThemeProvider,
@@ -11,7 +12,6 @@ import styled, {
 } from "./theme";
 
 import { RootState } from "./store";
-import { addMessage } from "./store/chat/actions";
 import { addUser, updateUser, addThreadMessage } from "./store/server/actions";
 import { toggleLeftBar, changeTheme } from "./store/layout/actions";
 
@@ -30,13 +30,18 @@ import {
   sendAddOrUpdateUserMessage,
 } from "./lib/services/broadcast/messages";
 
+const activeThreadSelector = createSelector(
+  (state: RootState) => state.server.threads,
+  (state: RootState) => state.server.activeThreadId,
+  (threads, activeThreadId) =>
+    threads.find((t) => t.id === activeThreadId) || null
+);
+
 function App() {
   const dispatch = useDispatch();
   const themeName = useSelector((state: RootState) => state.layout.theme);
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
-  const activeThread = useSelector(
-    (state: RootState) => state.chat.activeThread
-  );
+  const activeThread = useSelector(activeThreadSelector);
 
   const [entered, setEntered] = useState(false);
 
@@ -65,11 +70,7 @@ function App() {
         break;
       }
       case BroadcastMessageType.ADD_CHAT_ENTRY: {
-        if (activeThread && activeThread.id === message.threadId) {
-          dispatch(addMessage(message.entry));
-        } else {
-          dispatch(addThreadMessage(message.threadId, message.entry));
-        }
+        dispatch(addThreadMessage(message.threadId, message.entry));
         break;
       }
     }

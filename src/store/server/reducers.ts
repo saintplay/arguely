@@ -5,6 +5,7 @@ import {
   ADD_THREAD,
   UPDATE_USER,
   ADD_THREAD_MESSAGE,
+  CHANGE_ACTIVE_THREAD,
 } from "./types";
 import {
   getUsersMock,
@@ -16,6 +17,7 @@ const initState: ServerState = {
   users: getUsersMock(),
   threads: getThreadsMock(),
   categories: getCategoriesMock(),
+  activeThreadId: null,
 };
 
 export function serverReducer(
@@ -51,6 +53,12 @@ export function serverReducer(
       return {
         ...state,
         users: [...state.users, action.payload],
+      };
+    }
+    case CHANGE_ACTIVE_THREAD: {
+      return {
+        ...state,
+        activeThreadId: action.payload,
       };
     }
     case ADD_THREAD_MESSAGE: {

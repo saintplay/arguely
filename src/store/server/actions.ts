@@ -5,6 +5,7 @@ import {
   ADD_THREAD,
   UPDATE_USER,
   ADD_THREAD_MESSAGE,
+  CHANGE_ACTIVE_THREAD,
 } from "./types";
 
 export function addUser(newUser: User): ServerActionTypes {
@@ -38,5 +39,12 @@ export function addThreadMessage(
       threadId,
       entry,
     },
+  };
+}
+
+export function changeActiveThread(newThreadId: number): ServerActionTypes {
+  return {
+    type: CHANGE_ACTIVE_THREAD,
+    payload: newThreadId,
   };
 }

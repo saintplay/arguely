@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { ChatEntry, Thread } from "../store/types";
 import AppInput from "../components/AppInput";
 import AppButton from "../components/AppButton";
-import { addMessage } from "../store/chat/actions";
 import { RootState } from "../store";
 import { sendAddChatEntryMessage } from "../lib/services/broadcast/messages";
+import { addThreadMessage } from "../store/server/actions";
 
 const MAX_CHAT_MESSAGE_LENGTH = 500;
 
@@ -44,7 +44,7 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
       user: currentUser,
       timestamp: Date.now(),
     };
-    dispatch(addMessage(newMessage));
+    dispatch(addThreadMessage(activeThread.id, newMessage));
     sendAddChatEntryMessage(activeThread.id, newMessage);
 
     updateScroll();

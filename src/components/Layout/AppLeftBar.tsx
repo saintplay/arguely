@@ -6,7 +6,7 @@ import { RootState } from "../../store";
 import { Thread, ThreadGroup, ThreadType } from "../../store/types";
 
 import { LEFT_BAR_BREAKPOINT } from "../../theme";
-import { changeActiveThread } from "../../store/chat/actions";
+import { changeActiveThread } from "../../store/server/actions";
 
 type ActualThread = {
   category: string;
@@ -21,8 +21,8 @@ export const AppLeftBar = () => {
   const categories = useSelector((state: RootState) => state.server.categories);
   const users = useSelector((state: RootState) => state.server.users);
 
-  const onThreadClick = (thread: Thread) => {
-    dispatch(changeActiveThread(thread));
+  const onThreadClick = (threadId: number) => {
+    dispatch(changeActiveThread(threadId));
   };
 
   const groupThreads: ThreadGroup[] = threads.filter(
@@ -54,7 +54,7 @@ export const AppLeftBar = () => {
                 <div
                   key={thread.id}
                   className="text-center cursor-pointer py-2"
-                  onClick={() => onThreadClick(thread)}
+                  onClick={() => onThreadClick(thread.id)}
                 >
                   {thread.name}
                 </div>
@@ -67,7 +67,7 @@ export const AppLeftBar = () => {
             <div
               key={thread.id}
               className="text-center cursor-pointer py-2"
-              onClick={() => onThreadClick(thread)}
+              onClick={() => onThreadClick(thread.id)}
             >
               {thread.name}
             </div>
