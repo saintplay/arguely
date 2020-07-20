@@ -1,4 +1,18 @@
-import { Thread, ThreadType } from "../store/types";
+import { User, Thread, ThreadType } from "../store/types";
+
+export const getUserMock = (): User => ({
+  id: 1,
+  nickname: "Usuario de Prueba",
+  color: "red",
+});
+
+export const getUsersMock = (): User[] => [
+  { ...getUserMock(), id: 1, nickname: "Usuario 1" },
+  { ...getUserMock(), id: 2, nickname: "Usuario 2" },
+  { ...getUserMock(), id: 3, nickname: "Usuario 3" },
+  { ...getUserMock(), id: 4, nickname: "Usuario 4" },
+  { ...getUserMock(), id: 5, nickname: "Usuario 5" },
+];
 
 export const getThreadMock = (): Thread => ({
   id: 1,

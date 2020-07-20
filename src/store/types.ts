@@ -1,3 +1,9 @@
+export type User = {
+  id: number;
+  nickname: string;
+  color: string;
+};
+
 export enum ThreadType {
   DIRECT_THREAD = "DIRECT_THREAD",
   GROUP_THREAD = "GROUP_THREAD",
