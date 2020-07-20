@@ -11,12 +11,12 @@ import styled, {
 } from "./theme";
 
 import { RootState } from "./store";
-import { TOGGLE_LEFT_BAR, CHANGE_THEME } from "./store/layout/types";
 
 import AppTopBar from "./components/Layout/AppTopBar";
 import { AppLeftBar } from "./components/Layout/AppLeftBar";
 
 import ActiveChat from "./views/ActiveChat";
+import { toggleLeftBar, changeTheme } from "./store/layout/actions";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,10 +38,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <RootWrapper className="grid h-screen">
         <AppTopBar
-          onToggleLeftBar={() => dispatch({ type: TOGGLE_LEFT_BAR })}
-          onChangeTheme={(themeName) =>
-            dispatch({ type: CHANGE_THEME, payload: themeName })
-          }
+          onToggleLeftBar={() => dispatch(toggleLeftBar())}
+          onChangeTheme={(themeName) => dispatch(changeTheme(themeName))}
         />
         <WorkspaceWrapper className="grid relative">
           <AppLeftBar />

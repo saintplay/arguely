@@ -6,7 +6,7 @@ import { RootState } from "../../store";
 import { Thread, ThreadGroup, ThreadType } from "../../store/types";
 
 import { LEFT_BAR_BREAKPOINT } from "../../theme";
-import { CHANGE_ACTIVE_THREAD } from "../../store/chat/types";
+import { changeActiveThread } from "../../store/chat/actions";
 
 type ActualThread = {
   category: string;
@@ -21,7 +21,7 @@ export const AppLeftBar = () => {
   const users = useSelector((state: RootState) => state.server.users);
 
   const onThreadClick = (thread: Thread) => {
-    dispatch({ type: CHANGE_ACTIVE_THREAD, payload: thread });
+    dispatch(changeActiveThread(thread));
   };
 
   const groupThreads: ThreadGroup[] = threads.filter(
