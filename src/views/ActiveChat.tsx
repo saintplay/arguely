@@ -6,6 +6,7 @@ import AppInput from "../components/AppInput";
 import AppButton from "../components/AppButton";
 import { addMessage } from "../store/chat/actions";
 import { RootState } from "../store";
+import { sendAddChatEntryMessage } from "../lib/services/broadcast/messages";
 
 const MAX_CHAT_MESSAGE_LENGTH = 500;
 
@@ -44,6 +45,7 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
       timestamp: Date.now(),
     };
     dispatch(addMessage(newMessage));
+    sendAddChatEntryMessage(activeThread.id, newMessage);
 
     updateScroll();
     setMessage("");

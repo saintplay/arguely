@@ -4,6 +4,7 @@ import {
   ADD_USER,
   ADD_THREAD,
   UPDATE_USER,
+  ADD_THREAD_MESSAGE,
 } from "./types";
 import {
   getUsersMock,
@@ -50,6 +51,24 @@ export function serverReducer(
       return {
         ...state,
         users: [...state.users, action.payload],
+      };
+    }
+    case ADD_THREAD_MESSAGE: {
+      const threadIndex = state.threads.findIndex(
+        (t) => t.id === action.payload.threadId
+      );
+
+      if (threadIndex === -1) return state;
+
+      const threads = [...state.threads];
+      threads[threadIndex] = {
+        ...threads[threadIndex],
+        messages: [...threads[threadIndex].messages, action.payload.entry],
+      };
+
+      return {
+        ...state,
+        threads,
       };
     }
     default:

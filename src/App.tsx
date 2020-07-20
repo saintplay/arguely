@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import styled, {
@@ -11,7 +11,8 @@ import styled, {
 } from "./theme";
 
 import { RootState } from "./store";
-import { addUser, updateUser } from "./store/server/actions";
+import { addMessage } from "./store/chat/actions";
+import { addUser, updateUser, addThreadMessage } from "./store/server/actions";
 import { toggleLeftBar, changeTheme } from "./store/layout/actions";
 
 import AppTopBar from "./components/Layout/AppTopBar";
@@ -20,7 +21,10 @@ import { AppLeftBar } from "./components/Layout/AppLeftBar";
 import ActiveChat from "./views/ActiveChat";
 
 import { channel } from "./lib/services/broadcast";
-import { BroadcastMessageType } from "./lib/services/broadcast/types";
+import {
+  BroadcastMessageType,
+  BroadcastMessage,
+} from "./lib/services/broadcast/types";
 import {
   sendEnterSeverMessage,
   sendAddOrUpdateUserMessage,
@@ -34,6 +38,8 @@ function App() {
     (state: RootState) => state.chat.activeThread
   );
 
+  const [entered, setEntered] = useState(false);
+
   const theme = useMemo(() => {
     switch (themeName) {
       case APP_THEMES.SKYPE:
@@ -46,28 +52,51 @@ function App() {
     }
   }, [themeName]);
 
-  useEffect(() => {
-    channel.onmessage = (message) => {
-      switch (message.type) {
-        case BroadcastMessageType.ENTER_SERVER: {
-          dispatch(addUser(message.user));
-          // Comunicate back current user to new new user
-          sendAddOrUpdateUserMessage(currentUser);
-          break;
-        }
-        case BroadcastMessageType.ADD_OR_UPDATE_USER: {
-          dispatch(updateUser(message.user));
-          break;
-        }
+  const onChannelMessage = (message: BroadcastMessage) => {
+    switch (message.type) {
+      case BroadcastMessageType.ENTER_SERVER: {
+        dispatch(addUser(message.user));
+        // Comunicate back current user to new new user
+        sendAddOrUpdateUserMessage(currentUser);
+        break;
       }
-    };
-    dispatch(addUser(currentUser));
-    sendEnterSeverMessage(currentUser);
+      case BroadcastMessageType.ADD_OR_UPDATE_USER: {
+        dispatch(updateUser(message.user));
+        break;
+      }
+      case BroadcastMessageType.ADD_CHAT_ENTRY: {
+        if (activeThread && activeThread.id === message.threadId) {
+          dispatch(addMessage(message.entry));
+        } else {
+          dispatch(addThreadMessage(message.threadId, message.entry));
+        }
+        break;
+      }
+    }
+  };
 
-    return () => {
+  useEffect(
+    () => {
+      channel.onmessage = (message) => onChannelMessage(message);
+
+      if (entered) return;
+
+      dispatch(addUser(currentUser));
+      sendEnterSeverMessage(currentUser);
+      setEntered(true);
+    },
+    // Disable this rule, to include dependencies manually
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+    [activeThread]
+  );
+
+  // Close channel only once
+  useEffect(
+    () => () => {
       channel.close();
-    };
-  }, [currentUser, dispatch]);
+    },
+    []
+  );
 
   const getMainContent = () => {
     if (!activeThread) {

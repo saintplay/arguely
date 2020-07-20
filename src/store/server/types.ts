@@ -1,4 +1,4 @@
-import { User, Thread } from "../types";
+import { User, Thread, ChatEntry } from "../types";
 
 export interface ServerState {
   users: User[];
@@ -6,7 +6,8 @@ export interface ServerState {
   categories: string[];
 }
 
-export const ADD_THREAD = "ADD_THRAD";
+export const ADD_THREAD = "ADD_THREAD";
+export const ADD_THREAD_MESSAGE = "ADD_THREAD_MESSAGE";
 export const ADD_USER = "ADD_USER";
 export const UPDATE_USER = "UPDATE_USER";
 
@@ -25,4 +26,16 @@ interface AddThread {
   payload: Thread;
 }
 
-export type ServerActionTypes = AddUser | AddThread | UpdateUser;
+interface AddThreadMessage {
+  type: typeof ADD_THREAD_MESSAGE;
+  payload: {
+    threadId: Number;
+    entry: ChatEntry;
+  };
+}
+
+export type ServerActionTypes =
+  | AddUser
+  | AddThread
+  | UpdateUser
+  | AddThreadMessage;

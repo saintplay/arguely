@@ -1,5 +1,11 @@
-import { User, Thread } from "../types";
-import { ServerActionTypes, ADD_USER, ADD_THREAD, UPDATE_USER } from "./types";
+import { User, Thread, ChatEntry } from "../types";
+import {
+  ServerActionTypes,
+  ADD_USER,
+  ADD_THREAD,
+  UPDATE_USER,
+  ADD_THREAD_MESSAGE,
+} from "./types";
 
 export function addUser(newUser: User): ServerActionTypes {
   return {
@@ -19,5 +25,18 @@ export function updateUser(updatedUser: User): ServerActionTypes {
   return {
     type: UPDATE_USER,
     payload: updatedUser,
+  };
+}
+
+export function addThreadMessage(
+  threadId: number,
+  entry: ChatEntry
+): ServerActionTypes {
+  return {
+    type: ADD_THREAD_MESSAGE,
+    payload: {
+      threadId,
+      entry,
+    },
   };
 }

@@ -1,9 +1,10 @@
-import { User } from "../../../store/types";
+import { User, ChatEntry } from "../../../store/types";
 
 export enum BroadcastMessageType {
   ENTER_SERVER = "ENTER_SERVER",
   ADD_OR_UPDATE_USER = "ADD_OR_UPDATE_USER",
   LEAVE_SERVER = "LEAVE_SERVER",
+  ADD_CHAT_ENTRY = "ADD_CHAT_ENTRY",
 }
 interface BroadcastMessageBase {
   type: BroadcastMessageType;
@@ -19,8 +20,14 @@ interface BroadcastMessageAddOrUpdateUser extends BroadcastMessageBase {
 interface BroadcastMessageLeaveServer extends BroadcastMessageBase {
   type: BroadcastMessageType.LEAVE_SERVER;
 }
+interface BroadcastMessageAddChatEntry extends BroadcastMessageBase {
+  type: BroadcastMessageType.ADD_CHAT_ENTRY;
+  entry: ChatEntry;
+  threadId: number;
+}
 
 export type BroadcastMessage =
   | BroadcastMessageEnterServer
   | BroadcastMessageLeaveServer
-  | BroadcastMessageAddOrUpdateUser;
+  | BroadcastMessageAddOrUpdateUser
+  | BroadcastMessageAddChatEntry;
