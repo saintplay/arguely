@@ -1,13 +1,14 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
-const AppInput = ({
-  ...restProps
-}: React.InputHTMLAttributes<HTMLInputElement>) => {
+const AppInput = forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement>
+>(({ ...restProps }, ref) => {
   return (
     <div>
-      <input {...restProps} />
+      <input ref={ref} {...restProps} />
     </div>
   );
-};
+});
 
 export default AppInput;

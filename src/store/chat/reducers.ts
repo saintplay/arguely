@@ -1,4 +1,9 @@
-import { ChatState, ChatActionTypes, CHANGE_ACTIVE_THREAD } from "./types";
+import {
+  ChatState,
+  ChatActionTypes,
+  CHANGE_ACTIVE_THREAD,
+  ADD_MESSAGE,
+} from "./types";
 
 const initialState: ChatState = {
   activeThread: null,
@@ -13,6 +18,17 @@ export function chatReducer(
       return {
         ...state,
         activeThread: action.payload,
+      };
+    }
+    case ADD_MESSAGE: {
+      if (!state.activeThread) return state;
+
+      return {
+        ...state,
+        activeThread: {
+          ...state.activeThread,
+          messages: [...state.activeThread.messages, action.payload],
+        },
       };
     }
     default:

@@ -6,7 +6,7 @@ function AppButton({
   onClick,
 }: InferProps<typeof AppButton.propTypes>) {
   return (
-    <div className="cursor-pointer" onClick={onClick}>
+    <div className="select-none cursor-pointer" onClick={onClick}>
       {children}
     </div>
   );

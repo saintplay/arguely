@@ -30,6 +30,9 @@ function App() {
   const dispatch = useDispatch();
   const themeName = useSelector((state: RootState) => state.layout.theme);
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const activeThread = useSelector(
+    (state: RootState) => state.chat.activeThread
+  );
 
   const theme = useMemo(() => {
     switch (themeName) {
@@ -66,6 +69,13 @@ function App() {
     };
   }, [currentUser, dispatch]);
 
+  const getMainContent = () => {
+    if (!activeThread) {
+      return <div>No se seleccionó nigún Chat</div>;
+    }
+    return <ActiveChat activeThread={activeThread} />;
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <RootWrapper className="grid h-screen">
@@ -75,9 +85,7 @@ function App() {
         />
         <WorkspaceWrapper className="grid relative">
           <AppLeftBar />
-          <ContentWrapper>
-            <ActiveChat />
-          </ContentWrapper>
+          <ContentWrapper>{getMainContent()}</ContentWrapper>
         </WorkspaceWrapper>
       </RootWrapper>
     </ThemeProvider>
