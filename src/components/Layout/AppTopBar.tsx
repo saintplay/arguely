@@ -1,12 +1,16 @@
 import React from "react";
 import PropTypes, { InferProps } from "prop-types";
+import { useSelector } from "react-redux";
 
 import styled, { APP_THEMES } from "../../theme";
+import { RootState } from "../../store";
 
 function AppTopBar({
   onToggleLeftBar,
   onChangeTheme,
 }: InferProps<typeof AppTopBar.propTypes>) {
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+
   return (
     <AppTopBarWrapper className="flex">
       <div
@@ -15,6 +19,7 @@ function AppTopBar({
       >
         Toggle LeftBar
       </div>
+      <div>{currentUser.nickname}</div>
       <div
         className="select-none cursor-pointer px-2"
         onClick={() => onChangeTheme(APP_THEMES.DISCORD)}
