@@ -120,3 +120,29 @@ export const getThreadMock = (): Thread => ({
     },
   ],
 });
+
+export const getThreadsMock = (): Thread[] => [
+  { ...getThreadMock(), id: 1, name: "Chat 1" },
+  { ...getThreadMock(), id: 2, name: "Chat 2" },
+  {
+    ...getThreadMock(),
+    id: 3,
+    name: "Chat 3",
+    type: ThreadType.GROUP_THREAD,
+    members: [],
+  },
+  {
+    ...getThreadMock(),
+    id: 4,
+    name: "Chat 4",
+    type: ThreadType.GROUP_THREAD,
+    members: [],
+  },
+  {
+    ...getThreadMock(),
+    id: 5,
+    name: "Chat 5",
+    type: ThreadType.GROUP_THREAD,
+    members: [],
+  },
+];

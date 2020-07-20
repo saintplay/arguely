@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import styled from "../../theme";
 import { RootState } from "../../store";
-import { Thread } from "../../store/types";
+import { Thread, ThreadType } from "../../store/types";
 
 import { LEFT_BAR_BREAKPOINT } from "../../theme";
 import { CHANGE_ACTIVE_THREAD } from "../../store/chat/types";
@@ -17,11 +17,29 @@ export const AppLeftBar = () => {
     dispatch({ type: CHANGE_ACTIVE_THREAD, payload: thread });
   };
 
+  const groupThreads = threads.filter(
+    (t) => t.type === ThreadType.GROUP_THREAD
+  );
+  const directThreads = threads.filter(
+    (t) => t.type === ThreadType.DIRECT_THREAD
+  );
+
   return (
     <AppLeftBarWrapper className="grid" opened={opened}>
       <div className="flex flex-col" style={{ width: 240 }}>
         <div style={{ flex: 1 }}>
-          {threads.map((thread) => (
+          <div className="font-bold"> Grupos </div>
+          {groupThreads.map((thread) => (
+            <div
+              key={thread.id}
+              className="text-center cursor-pointer py-2"
+              onClick={() => onThreadClick(thread)}
+            >
+              {thread.name}
+            </div>
+          ))}
+          <div className="font-bold"> Directos </div>
+          {directThreads.map((thread) => (
             <div
               key={thread.id}
               className="text-center cursor-pointer py-2"
