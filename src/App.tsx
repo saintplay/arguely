@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import styled, {
@@ -11,16 +11,25 @@ import styled, {
 } from "./theme";
 
 import { RootState } from "./store";
+import { addUser, updateUser } from "./store/server/actions";
+import { toggleLeftBar, changeTheme } from "./store/layout/actions";
 
 import AppTopBar from "./components/Layout/AppTopBar";
 import { AppLeftBar } from "./components/Layout/AppLeftBar";
 
 import ActiveChat from "./views/ActiveChat";
-import { toggleLeftBar, changeTheme } from "./store/layout/actions";
+
+import { channel } from "./lib/services/broadcast";
+import { BroadcastMessageType } from "./lib/services/broadcast/types";
+import {
+  sendEnterSeverMessage,
+  sendAddOrUpdateUserMessage,
+} from "./lib/services/broadcast/messages";
 
 function App() {
   const dispatch = useDispatch();
   const themeName = useSelector((state: RootState) => state.layout.theme);
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
   const theme = useMemo(() => {
     switch (themeName) {
@@ -33,6 +42,29 @@ function App() {
         return DISCORD_THEME;
     }
   }, [themeName]);
+
+  useEffect(() => {
+    channel.onmessage = (message) => {
+      switch (message.type) {
+        case BroadcastMessageType.ENTER_SERVER: {
+          dispatch(addUser(message.user));
+          // Comunicate back current user to new new user
+          sendAddOrUpdateUserMessage(currentUser);
+          break;
+        }
+        case BroadcastMessageType.ADD_OR_UPDATE_USER: {
+          dispatch(updateUser(message.user));
+          break;
+        }
+      }
+    };
+    dispatch(addUser(currentUser));
+    sendEnterSeverMessage(currentUser);
+
+    return () => {
+      channel.close();
+    };
+  }, [currentUser, dispatch]);
 
   return (
     <ThemeProvider theme={theme}>

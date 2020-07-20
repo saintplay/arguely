@@ -8,9 +8,15 @@ export interface ServerState {
 
 export const ADD_THREAD = "ADD_THRAD";
 export const ADD_USER = "ADD_USER";
+export const UPDATE_USER = "UPDATE_USER";
 
 interface AddUser {
   type: typeof ADD_USER;
+  payload: User;
+}
+
+interface UpdateUser {
+  type: typeof UPDATE_USER;
   payload: User;
 }
 
@@ -19,4 +25,4 @@ interface AddThread {
   payload: Thread;
 }
 
-export type ServerActionTypes = AddUser | AddThread;
+export type ServerActionTypes = AddUser | AddThread | UpdateUser;
