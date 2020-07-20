@@ -16,8 +16,8 @@ type ActualThread = {
 export const AppLeftBar = () => {
   const dispatch = useDispatch();
   const opened = useSelector((state: RootState) => state.layout.opened);
-  const threads = useSelector((state: RootState) => state.thread.threads);
-  const categories = useSelector((state: RootState) => state.thread.categories);
+  const threads = useSelector((state: RootState) => state.server.threads);
+  const categories = useSelector((state: RootState) => state.server.categories);
   const users = useSelector((state: RootState) => state.server.users);
 
   const onThreadClick = (thread: Thread) => {
