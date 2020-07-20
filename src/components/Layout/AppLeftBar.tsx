@@ -18,6 +18,7 @@ export const AppLeftBar = () => {
   const opened = useSelector((state: RootState) => state.layout.opened);
   const threads = useSelector((state: RootState) => state.thread.threads);
   const categories = useSelector((state: RootState) => state.thread.categories);
+  const users = useSelector((state: RootState) => state.server.users);
 
   const onThreadClick = (thread: Thread) => {
     dispatch({ type: CHANGE_ACTIVE_THREAD, payload: thread });
@@ -60,7 +61,7 @@ export const AppLeftBar = () => {
             </div>
           ))}
 
-          <div className="font-bold"> Directos </div>
+          <div className="font-bold">Directos</div>
           {directThreads.map((thread) => (
             <div
               key={thread.id}
@@ -68,6 +69,13 @@ export const AppLeftBar = () => {
               onClick={() => onThreadClick(thread)}
             >
               {thread.name}
+            </div>
+          ))}
+
+          <div className="font-bold">Usuarios</div>
+          {users.map((user) => (
+            <div key={user.id} className="text-center cursor-pointer py-2">
+              {user.nickname}
             </div>
           ))}
         </div>
