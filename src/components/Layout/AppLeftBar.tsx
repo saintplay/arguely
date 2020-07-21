@@ -1,50 +1,34 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import styled, { LEFT_BAR_BREAKPOINT } from "../../theme";
 
 import { RootState } from "../../store";
-import { Thread, ThreadGroup, ThreadType } from "../../store/types";
+import { ThreadType } from "../../store/types";
 import { changeActiveThread } from "../../store/server/actions";
+import { threadsByCategorySelector } from "../../store/selectors";
 
-import AppButton from "../../components/AppButton";
-import AppModal from "../../components/AppModal";
-
-type ActualThread = {
-  category: string;
-  threads: Thread[];
-};
+import AppButton from "../AppButton";
+import AppModal from "../AppModal";
+import AppInput from "../AppInput";
 
 export const AppLeftBar = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const opened = useSelector((state: RootState) => state.layout.opened);
   const threads = useSelector((state: RootState) => state.server.threads);
-  const categories = useSelector((state: RootState) => state.server.categories);
   const users = useSelector((state: RootState) => state.server.users);
+  const threadsByCategory = useSelector(threadsByCategorySelector);
 
-  const [searchModal, setSearchModal] = useState(false);
+  const [searchModal, setSearchModal] = useState(true);
+  const [searchText, setSearchText] = useState("");
 
   const onThreadClick = (threadId: number) => {
     dispatch(changeActiveThread(threadId));
   };
 
-  const groupThreads: ThreadGroup[] = threads.filter(
-    (t): t is ThreadGroup => t.type === ThreadType.GROUP_THREAD
-  );
   const directThreads = threads.filter(
     (t) => t.type === ThreadType.DIRECT_THREAD
-  );
-
-  const groupThreadsByCategory: ActualThread[] = useMemo(
-    () =>
-      categories
-        .map((category) => ({
-          category,
-          threads: groupThreads.filter((t) => t.category === category),
-        }))
-        .filter((a) => a.threads.length),
-    [categories, groupThreads]
   );
 
   return (
@@ -53,7 +37,7 @@ export const AppLeftBar = () => {
         <div style={{ flex: 1 }}>
           <AppButton onClick={() => setSearchModal(true)}>Buscar</AppButton>
 
-          {groupThreadsByCategory.map((actualThreads) => (
+          {threadsByCategory.map((actualThreads) => (
             <div key={actualThreads.category}>
               <div className="font-bold">{actualThreads.category}</div>
               {actualThreads.threads.map((thread) => (
@@ -95,8 +79,14 @@ export const AppLeftBar = () => {
         isOpen={searchModal}
         onBackgroundClick={() => setSearchModal(false)}
       >
-        <span>I am a modal!</span>
-        <AppButton onClick={() => setSearchModal(false)}>Close me</AppButton>
+        <div className="flex">
+          <AppInput
+            value={searchText}
+            onChange={() => setSearchText(searchText)}
+          />
+          <AppButton onClick={() => setSearchModal(false)}>Close me</AppButton>
+        </div>
+        <div className="p-4">Hola Mundo</div>
       </AppModal>
     </AppLeftBarWrapper>
   );

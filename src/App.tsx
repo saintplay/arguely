@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createSelector } from "reselect";
 import { ModalProvider } from "styled-react-modal";
 
 import styled, {
@@ -15,6 +14,7 @@ import styled, {
 import { RootState } from "./store";
 import { addUser, updateUser, addThreadMessage } from "./store/server/actions";
 import { toggleLeftBar, changeTheme } from "./store/layout/actions";
+import { activeThreadSelector } from "./store/selectors";
 
 import AppTopBar from "./components/Layout/AppTopBar";
 import { AppLeftBar } from "./components/Layout/AppLeftBar";
@@ -30,13 +30,6 @@ import {
   sendEnterSeverMessage,
   sendAddOrUpdateUserMessage,
 } from "./lib/services/broadcast/messages";
-
-const activeThreadSelector = createSelector(
-  (state: RootState) => state.server.threads,
-  (state: RootState) => state.server.activeThreadId,
-  (threads, activeThreadId) =>
-    threads.find((t) => t.id === activeThreadId) || null
-);
 
 function App() {
   const dispatch = useDispatch();
