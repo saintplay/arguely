@@ -12,6 +12,7 @@ import {
   ThreadGroup,
   User,
   ThreadByCategory,
+  ChatLogType,
 } from "../../store/types";
 import { addThread, changeActiveThread } from "../../store/server/actions";
 import { threadsByCategorySelector } from "../../store/selectors";
@@ -179,7 +180,21 @@ export const AppLeftBar = () => {
       type: ThreadType.GROUP_THREAD,
       name: actualGroupName,
       category: selectedCategory,
-      messages: [],
+      messages: [
+        {
+          id: 1,
+          logType: ChatLogType.CHAT_CREATED,
+          timestamp: Date.now(),
+        },
+        {
+          id: 2,
+          logType: ChatLogType.USER_JOINED,
+          timestamp: Date.now(),
+          payload: {
+            user: currentUser,
+          },
+        },
+      ],
     };
 
     dispatch(addThread(newGroupThread));

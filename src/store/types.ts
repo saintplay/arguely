@@ -9,13 +9,15 @@ export enum ThreadType {
   GROUP_THREAD = "GROUP_THREAD",
 }
 
-const CHAT_LOG_CREATED = "CHAT_CREATED";
-const CHAT_LOG_USER_JOINED = "USER_JOINED";
+export enum ChatLogType {
+  CHAT_CREATED = "CHAT_CREATED",
+  USER_JOINED = "USER_JOINED",
+}
 
 interface ChatBase {
   id: number;
   timestamp: number;
-  logType: string | boolean;
+  logType: ChatLogType | boolean;
 }
 
 interface ChatMessage extends ChatBase {
@@ -25,14 +27,14 @@ interface ChatMessage extends ChatBase {
 }
 
 interface ChatLogBase extends ChatBase {
-  logType: string;
+  logType: ChatLogType;
 }
 
 interface ChatLogCreated extends ChatLogBase {
-  logType: typeof CHAT_LOG_CREATED;
+  logType: typeof ChatLogType.CHAT_CREATED;
 }
 interface ChatLogUserJoined extends ChatLogBase {
-  logType: typeof CHAT_LOG_USER_JOINED;
+  logType: typeof ChatLogType.USER_JOINED;
   payload: {
     user: User;
   };

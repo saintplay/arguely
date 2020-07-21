@@ -1,4 +1,4 @@
-import { User, Thread, ThreadType } from "../store/types";
+import { User, Thread, ThreadType, ChatLogType } from "../store/types";
 
 export const getUserMock = (): User => ({
   id: 1,
@@ -21,7 +21,7 @@ export const getThreadMock = (): Thread => ({
   messages: [
     {
       id: 4,
-      logType: "CHAT_CREATED",
+      logType: ChatLogType.CHAT_CREATED,
       timestamp: 1514868102000,
     },
     {
@@ -48,7 +48,7 @@ export const getThreadMock = (): Thread => ({
     },
     {
       id: 14,
-      logType: "USER_JOINED",
+      logType: ChatLogType.USER_JOINED,
       timestamp: 1514868102000,
       payload: {
         user: {
@@ -82,7 +82,7 @@ export const getThreadMock = (): Thread => ({
     },
     {
       id: 36,
-      logType: "USER_JOINED",
+      logType: ChatLogType.USER_JOINED,
       timestamp: 1514868102000,
       payload: {
         user: {
