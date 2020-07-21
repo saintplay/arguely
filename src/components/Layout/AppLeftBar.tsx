@@ -82,8 +82,15 @@ export const AppLeftBar = () => {
     []
   );
 
-  const directThreads = threads.filter(
-    (t) => t.type === ThreadType.DIRECT_THREAD
+  const directThreads: ThreadDirect[] = threads.filter(
+    (t): t is ThreadDirect => t.type === ThreadType.DIRECT_THREAD
+  );
+
+  const actualUsers = users.filter(
+    (u) =>
+      directThreads.findIndex(
+        (d) => d.userId1 === u.id || d.userId2 === u.id
+      ) === -1
   );
 
   const searchGlobally = (text: string) => {
@@ -273,7 +280,7 @@ export const AppLeftBar = () => {
           ))}
 
           <div className="font-bold">Otros Usuarios</div>
-          {users.map(
+          {actualUsers.map(
             (user) =>
               currentUser.id !== user.id && (
                 <div
