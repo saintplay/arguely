@@ -180,7 +180,6 @@ export const AppLeftBar = () => {
       name: actualGroupName,
       category: selectedCategory,
       messages: [],
-      members: [],
     };
 
     dispatch(addThread(newGroupThread));

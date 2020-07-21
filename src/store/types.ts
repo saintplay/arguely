@@ -55,7 +55,6 @@ export interface ThreadDirect extends ThreadBase {
 export interface ThreadGroup extends ThreadBase {
   type: typeof ThreadType.GROUP_THREAD;
   category: string;
-  members: User[];
 }
 
 export type Thread = ThreadDirect | ThreadGroup;
