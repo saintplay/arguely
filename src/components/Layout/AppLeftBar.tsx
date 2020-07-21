@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import debounce from "lodash.debounce";
 import flatten from "lodash.flatten";
@@ -38,12 +38,26 @@ export const AppLeftBar = () => {
   const users = useSelector((state: RootState) => state.server.users);
   const threadsByCategory = useSelector(threadsByCategorySelector);
 
-  const [searchModal, setSearchModal] = useState(true);
+  const [searchModal, setSearchModal] = useState(false);
   const [searchText, setSearchText] = useState("");
 
   const [threadsFounded, setThreadsFounded] = useState<Thread[]>([]);
   const [usersFounded, setUsersFounded] = useState<User[]>([]);
   const [categoriesFounded, setCategoriesFounded] = useState<string[]>([]);
+
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // We focus asynchronusly because how node_modules/styled-react-modal works
+  useEffect(() => {
+    if (searchModal) {
+      const timeoutNumber = setTimeout(() => {
+        if (searchInputRef.current) {
+          searchInputRef.current.focus();
+        }
+      }, 50);
+      return () => clearInterval(timeoutNumber);
+    }
+  }, [searchModal]);
 
   const delayedSearch = useCallback(
     debounce(
@@ -54,25 +68,35 @@ export const AppLeftBar = () => {
   );
 
   const onThreadClick = (threadId: number) => {
-    setSearchModal(false);
-    setSearchText("");
     dispatch(changeActiveThread(threadId));
+    if (searchText) {
+      onCloseSearchModal();
+    }
   };
 
   const directThreads = threads.filter(
     (t) => t.type === ThreadType.DIRECT_THREAD
   );
 
-  const onChangeSearchText = (newText: string) => {
-    setSearchText(newText);
-    delayedSearch(newText.trim());
-  };
-
   const searchGlobally = (text: string) => {
     const regex = new RegExp(text, "i");
     setThreadsFounded(threads.filter((t) => regex.test(t.name)));
     setUsersFounded(users.filter((u) => regex.test(u.nickname)));
     setCategoriesFounded(categories.filter((c) => regex.test(c)));
+  };
+
+  const onOpenSearchModal = () => {
+    setSearchModal(true);
+  };
+
+  const onCloseSearchModal = () => {
+    setSearchModal(false);
+    setSearchText("");
+  };
+
+  const onChangeSearchText = (newText: string) => {
+    setSearchText(newText);
+    delayedSearch(newText.trim());
   };
 
   const renderSearchResults = () => {
@@ -129,7 +153,7 @@ export const AppLeftBar = () => {
     <AppLeftBarWrapper className="grid" opened={opened}>
       <div className="flex flex-col" style={{ width: 240 }}>
         <div style={{ flex: 1 }}>
-          <AppButton onClick={() => setSearchModal(true)}>Buscar</AppButton>
+          <AppButton onClick={() => onOpenSearchModal()}>Buscar</AppButton>
 
           {threadsByCategory.map((actualThreads) => (
             <div key={actualThreads.category}>
@@ -171,15 +195,16 @@ export const AppLeftBar = () => {
 
       <AppModal
         isOpen={searchModal}
-        onBackgroundClick={() => setSearchModal(false)}
-        onEscapeKeydown={() => setSearchModal(false)}
+        onBackgroundClick={() => onCloseSearchModal()}
+        onEscapeKeydown={() => onCloseSearchModal()}
       >
         <div className="flex">
           <AppInput
+            ref={searchInputRef}
             value={searchText}
             onChange={(e) => onChangeSearchText(e.target.value)}
           />
-          <AppButton onClick={() => setSearchModal(false)}>Close me</AppButton>
+          <AppButton onClick={() => onCloseSearchModal()}>Close me</AppButton>
         </div>
         <div className="p-4">{renderSearchResults()}</div>
       </AppModal>
