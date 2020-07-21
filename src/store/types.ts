@@ -59,3 +59,8 @@ export interface ThreadGroup extends ThreadBase {
 }
 
 export type Thread = ThreadDirect | ThreadGroup;
+
+export type ThreadByCategory = {
+  category: string;
+  threads: ThreadGroup[];
+};

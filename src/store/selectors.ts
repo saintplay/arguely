@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 
 import { RootState } from ".";
-import { ThreadType, ThreadGroup } from "./types";
+import { getThreadsByCategory } from "../lib/utils";
 
 export const activeThreadSelector = createSelector(
   (state: RootState) => state.server.threads,
@@ -13,15 +13,5 @@ export const activeThreadSelector = createSelector(
 export const threadsByCategorySelector = createSelector(
   (state: RootState) => state.server.threads,
   (state: RootState) => state.server.categories,
-  (threads, categories) => {
-    const groupThreads: ThreadGroup[] = threads.filter(
-      (t): t is ThreadGroup => t.type === ThreadType.GROUP_THREAD
-    );
-    return categories
-      .map((category) => ({
-        category,
-        threads: groupThreads.filter((t) => t.category === category),
-      }))
-      .filter((a) => a.threads.length);
-  }
+  (threads, categories) => getThreadsByCategory(threads, categories)
 );

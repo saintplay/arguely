@@ -9,5 +9,6 @@ declare module "styled-react-modal" {
   const Modal: FunctionComponent<{
     isOpen: boolean;
     onBackgroundClick?: function;
+    onEscapeKeydown?: function;
   }>;
 }
