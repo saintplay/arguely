@@ -10,6 +10,7 @@ import { addThreadMessage, deleteThreadMessage } from "../store/server/actions";
 
 import { sendAddChatEntryMessage } from "../lib/services/broadcast/messages";
 
+// TODO Proper validation
 const MAX_CHAT_MESSAGE_LENGTH = 500;
 
 interface ActiveChatProps {
@@ -37,7 +38,7 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
 
     if (trimmedMessage === "") return;
 
-    const actualMessage = message.substring(0, MAX_CHAT_MESSAGE_LENGTH);
+    const actualMessage = trimmedMessage.substring(0, MAX_CHAT_MESSAGE_LENGTH);
 
     const newMessage: ChatEntry = {
       id: Date.now(),
