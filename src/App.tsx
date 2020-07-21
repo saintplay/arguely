@@ -18,6 +18,7 @@ import {
   addThreadMessage,
   addThread,
   addThreadUnseen,
+  changeActiveThread,
 } from "./store/server/actions";
 import { toggleLeftBar, changeTheme } from "./store/layout/actions";
 import { activeThreadSelector } from "./store/selectors";
@@ -80,6 +81,20 @@ function App() {
       case BroadcastMessageType.ADD_THREAD: {
         if (message.thread.type === ThreadType.DIRECT_THREAD) {
           if (
+            activeThread &&
+            activeThread.type === ThreadType.PRE_DIRECT_THREAD
+          ) {
+            if (
+              message.thread.userId1 === activeThread.userId ||
+              message.thread.userId2 === activeThread.userId
+            ) {
+              dispatch(addThread(message.thread));
+              dispatch(changeActiveThread(message.thread.id));
+              break;
+            }
+          }
+
+          if (
             message.thread.userId1 === currentUser.id ||
             message.thread.userId2 === currentUser.id
           ) {
@@ -88,6 +103,7 @@ function App() {
           }
           break;
         }
+
         dispatch(addThread(message.thread));
         break;
       }
