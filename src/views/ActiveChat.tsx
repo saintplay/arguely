@@ -95,7 +95,9 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
       return (
         <div className="flex justify-between py-2">
           <div>{entry.message}</div>
-          <AppButton onClick={() => onDeleteEntry(entry)}>Eliminar</AppButton>
+          {entry.user.id === currentUser.id && (
+            <AppButton onClick={() => onDeleteEntry(entry)}>Eliminar</AppButton>
+          )}
         </div>
       );
     }
