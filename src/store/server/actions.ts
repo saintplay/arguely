@@ -7,6 +7,7 @@ import {
   ADD_THREAD_MESSAGE,
   CHANGE_ACTIVE_THREAD,
   DELETE_THREAD_MESSAGE,
+  ADD_PRE_THREAD,
 } from "./types";
 
 export function addUser(newUser: User): ServerActionTypes {
@@ -19,6 +20,13 @@ export function addUser(newUser: User): ServerActionTypes {
 export function addThread(newThread: Thread): ServerActionTypes {
   return {
     type: ADD_THREAD,
+    payload: newThread,
+  };
+}
+
+export function addPreThread(newThread: Thread): ServerActionTypes {
+  return {
+    type: ADD_PRE_THREAD,
     payload: newThread,
   };
 }

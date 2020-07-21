@@ -5,10 +5,19 @@ import AppInput from "../components/AppInput";
 import AppButton from "../components/AppButton";
 
 import { RootState } from "../store";
-import { ChatEntry, Thread } from "../store/types";
-import { addThreadMessage, deleteThreadMessage } from "../store/server/actions";
+import { ChatEntry, Thread, ThreadType, ThreadDirect } from "../store/types";
+import {
+  addThreadMessage,
+  deleteThreadMessage,
+  addThread,
+  changeActiveThread,
+} from "../store/server/actions";
 
-import { sendAddChatEntryMessage } from "../lib/services/broadcast/messages";
+import {
+  sendAddChatEntryMessage,
+  sendAddThreadMessage,
+} from "../lib/services/broadcast/messages";
+import DirectThreadName from "../components/Chat/DirectThreadName";
 
 // TODO Proper validation
 const MAX_CHAT_MESSAGE_LENGTH = 500;
@@ -47,8 +56,26 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
       user: currentUser,
       timestamp: Date.now(),
     };
-    dispatch(addThreadMessage(activeThread.id, newMessage));
-    sendAddChatEntryMessage(activeThread.id, newMessage);
+
+    if (activeThread.type === ThreadType.PRE_DIRECT_THREAD) {
+      const userId = currentUser.id;
+      const newDirectThread: ThreadDirect = {
+        ...activeThread,
+        name: `${userId}-${activeThread.userId}`,
+        id: Date.now(),
+        type: ThreadType.DIRECT_THREAD,
+        userId1: userId,
+        userId2: activeThread.userId,
+        messages: [newMessage],
+      };
+
+      dispatch(addThread(newDirectThread));
+      dispatch(changeActiveThread(newDirectThread.id));
+      sendAddThreadMessage(newDirectThread);
+    } else {
+      dispatch(addThreadMessage(activeThread.id, newMessage));
+      sendAddChatEntryMessage(activeThread.id, newMessage);
+    }
 
     updateScroll();
     setMessage("");
@@ -76,7 +103,14 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
 
   return (
     <div>
-      <div>{activeThread.name}</div>
+      {activeThread.type === ThreadType.DIRECT_THREAD ? (
+        <DirectThreadName
+          currentUserId={currentUser.id}
+          thread={activeThread}
+        />
+      ) : (
+        <div>{activeThread.name}</div>
+      )}
       <div>
         {activeThread.messages.map((entry) => (
           <div key={entry.id}>{renderMessage(entry)}</div>

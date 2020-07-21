@@ -10,11 +10,17 @@ import {
   ThreadType,
   Thread,
   ThreadGroup,
+  ThreadPreDirect,
   User,
   ThreadByCategory,
   ChatLogType,
+  ThreadDirect,
 } from "../../store/types";
-import { addThread, changeActiveThread } from "../../store/server/actions";
+import {
+  addThread,
+  changeActiveThread,
+  addPreThread,
+} from "../../store/server/actions";
 import { threadsByCategorySelector } from "../../store/selectors";
 
 import { getThreadsByCategory } from "../../lib/utils";
@@ -23,6 +29,7 @@ import AppButton from "../AppButton";
 import AppModal from "../AppModal";
 import AppInput from "../AppInput";
 import { sendAddThreadMessage } from "../../lib/services/broadcast/messages";
+import DirectThreadName from "../Chat/DirectThreadName";
 
 const SEARCH_DELAY_MILLISECONDS = 150;
 
@@ -74,13 +81,6 @@ export const AppLeftBar = () => {
     ),
     []
   );
-
-  const onThreadClick = (threadId: number) => {
-    dispatch(changeActiveThread(threadId));
-    if (searchText) {
-      onCloseSearchModal();
-    }
-  };
 
   const directThreads = threads.filter(
     (t) => t.type === ThreadType.DIRECT_THREAD
@@ -158,7 +158,11 @@ export const AppLeftBar = () => {
         {actualReturn.users.map(
           (user) =>
             currentUser.id !== user.id && (
-              <div key={user.id} className="text-center cursor-pointer py-2">
+              <div
+                key={user.id}
+                className="text-center cursor-pointer py-2"
+                onClick={() => onUserPreThreadClick(user)}
+              >
                 {user.nickname}
               </div>
             )
@@ -203,6 +207,27 @@ export const AppLeftBar = () => {
     onCloseCreateGroupModal();
   };
 
+  const onThreadClick = (threadId: number) => {
+    dispatch(changeActiveThread(threadId));
+    if (searchModal) {
+      onCloseSearchModal();
+    }
+  };
+
+  const onUserPreThreadClick = (user: User) => {
+    const newPreThread: ThreadPreDirect = {
+      id: Date.now(),
+      type: ThreadType.PRE_DIRECT_THREAD,
+      name: user.nickname,
+      messages: [],
+      userId: user.id,
+    };
+    dispatch(addPreThread(newPreThread));
+    if (searchModal) {
+      onCloseSearchModal();
+    }
+  };
+
   return (
     <AppLeftBarWrapper className="grid" opened={opened}>
       <div className="flex flex-col" style={{ width: 240 }}>
@@ -240,7 +265,10 @@ export const AppLeftBar = () => {
               className="text-center cursor-pointer py-2"
               onClick={() => onThreadClick(thread.id)}
             >
-              <div>{thread.name}</div>
+              <DirectThreadName
+                currentUserId={currentUser.id}
+                thread={thread as ThreadDirect}
+              />
             </div>
           ))}
 
@@ -248,7 +276,11 @@ export const AppLeftBar = () => {
           {users.map(
             (user) =>
               currentUser.id !== user.id && (
-                <div key={user.id} className="text-center cursor-pointer py-2">
+                <div
+                  key={user.id}
+                  className="text-center cursor-pointer py-2"
+                  onClick={() => onUserPreThreadClick(user)}
+                >
                   {user.nickname}
                 </div>
               )

@@ -18,6 +18,8 @@ export const getThreadMock = (): Thread => ({
   id: 1,
   type: ThreadType.DIRECT_THREAD,
   name: "Chat Prueba",
+  userId1: 1,
+  userId2: 2,
   messages: [
     {
       id: 4,
@@ -162,8 +164,8 @@ export const getThreadMock = (): Thread => ({
 });
 
 export const getThreadsMock = (): Thread[] => [
-  { ...getThreadMock(), id: 1, name: "Chat 1" },
-  { ...getThreadMock(), id: 2, name: "Chat 2" },
+  // { ...getThreadMock(), id: 1, name: "Chat 1" },
+  // { ...getThreadMock(), id: 2, name: "Chat 2" },
   {
     ...getThreadMock(),
     id: 3,

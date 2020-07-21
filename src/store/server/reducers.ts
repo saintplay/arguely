@@ -7,6 +7,7 @@ import {
   ADD_THREAD_MESSAGE,
   CHANGE_ACTIVE_THREAD,
   DELETE_THREAD_MESSAGE,
+  ADD_PRE_THREAD,
 } from "./types";
 import {
   getUsersMock,
@@ -19,6 +20,7 @@ const initState: ServerState = {
   threads: getThreadsMock(),
   categories: getCategoriesMock(),
   activeThreadId: null,
+  activePreThread: null,
 };
 
 export function serverReducer(
@@ -36,6 +38,13 @@ export function serverReducer(
       return {
         ...state,
         threads: [...state.threads, action.payload],
+      };
+    }
+    case ADD_PRE_THREAD: {
+      return {
+        ...state,
+        activeThreadId: null,
+        activePreThread: action.payload,
       };
     }
     case UPDATE_USER: {
@@ -60,6 +69,7 @@ export function serverReducer(
       return {
         ...state,
         activeThreadId: action.payload,
+        activePreThread: null,
       };
     }
     case ADD_THREAD_MESSAGE: {

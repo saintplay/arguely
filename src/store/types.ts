@@ -6,6 +6,7 @@ export type User = {
 
 export enum ThreadType {
   DIRECT_THREAD = "DIRECT_THREAD",
+  PRE_DIRECT_THREAD = "PRE_DIRECT_THREAD",
   GROUP_THREAD = "GROUP_THREAD",
 }
 
@@ -52,6 +53,13 @@ interface ThreadBase {
 
 export interface ThreadDirect extends ThreadBase {
   type: typeof ThreadType.DIRECT_THREAD;
+  userId1: number;
+  userId2: number;
+}
+
+export interface ThreadPreDirect extends ThreadBase {
+  type: typeof ThreadType.PRE_DIRECT_THREAD;
+  userId: number;
 }
 
 export interface ThreadGroup extends ThreadBase {
@@ -59,7 +67,7 @@ export interface ThreadGroup extends ThreadBase {
   category: string;
 }
 
-export type Thread = ThreadDirect | ThreadGroup;
+export type Thread = ThreadDirect | ThreadGroup | ThreadPreDirect;
 
 export type ThreadByCategory = {
   category: string;

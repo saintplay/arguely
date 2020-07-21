@@ -5,9 +5,11 @@ export interface ServerState {
   threads: Thread[];
   categories: string[];
   activeThreadId: number | null;
+  activePreThread: Thread | null;
 }
 
 export const ADD_THREAD = "ADD_THREAD";
+export const ADD_PRE_THREAD = "ADD_PRE_THREAD";
 export const CHANGE_ACTIVE_THREAD = "CHANGE_ACTIVE_THREAD";
 export const ADD_THREAD_MESSAGE = "ADD_THREAD_MESSAGE";
 export const DELETE_THREAD_MESSAGE = "DELETE_THREAD_MESSAGE";
@@ -26,6 +28,11 @@ interface UpdateUser {
 
 interface AddThread {
   type: typeof ADD_THREAD;
+  payload: Thread;
+}
+
+interface AddPreThread {
+  type: typeof ADD_PRE_THREAD;
   payload: Thread;
 }
 
@@ -53,6 +60,7 @@ interface DeleteThreadMessage {
 export type ServerActionTypes =
   | AddUser
   | AddThread
+  | AddPreThread
   | UpdateUser
   | AddThreadMessage
   | DeleteThreadMessage
