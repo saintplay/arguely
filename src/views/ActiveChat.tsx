@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef, FunctionComponent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { ChatEntry, Thread } from "../store/types";
 import AppInput from "../components/AppInput";
 import AppButton from "../components/AppButton";
+
 import { RootState } from "../store";
+import { ChatEntry, Thread } from "../store/types";
+import { addThreadMessage, deleteThreadMessage } from "../store/server/actions";
+
 import { sendAddChatEntryMessage } from "../lib/services/broadcast/messages";
-import { addThreadMessage } from "../store/server/actions";
 
 const MAX_CHAT_MESSAGE_LENGTH = 500;
 
@@ -54,11 +56,20 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
     }
   };
 
+  const onDeleteEntry = (entry: ChatEntry) => {
+    dispatch(deleteThreadMessage(activeThread.id, entry.id));
+  };
+
   const renderMessage = (entry: ChatEntry) => {
     if (entry.logType) {
       return <div>{entry.logType}</div>;
     } else {
-      return <div>{entry.message}</div>;
+      return (
+        <div className="flex justify-between py-2">
+          <div>{entry.message}</div>
+          <AppButton onClick={() => onDeleteEntry(entry)}>Eliminar</AppButton>
+        </div>
+      );
     }
   };
 

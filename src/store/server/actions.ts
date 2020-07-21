@@ -6,6 +6,7 @@ import {
   UPDATE_USER,
   ADD_THREAD_MESSAGE,
   CHANGE_ACTIVE_THREAD,
+  DELETE_THREAD_MESSAGE,
 } from "./types";
 
 export function addUser(newUser: User): ServerActionTypes {
@@ -38,6 +39,19 @@ export function addThreadMessage(
     payload: {
       threadId,
       entry,
+    },
+  };
+}
+
+export function deleteThreadMessage(
+  threadId: number,
+  entryId: number
+): ServerActionTypes {
+  return {
+    type: DELETE_THREAD_MESSAGE,
+    payload: {
+      threadId,
+      entryId,
     },
   };
 }

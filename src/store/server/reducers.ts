@@ -6,6 +6,7 @@ import {
   UPDATE_USER,
   ADD_THREAD_MESSAGE,
   CHANGE_ACTIVE_THREAD,
+  DELETE_THREAD_MESSAGE,
 } from "./types";
 import {
   getUsersMock,
@@ -72,6 +73,32 @@ export function serverReducer(
       threads[threadIndex] = {
         ...threads[threadIndex],
         messages: [...threads[threadIndex].messages, action.payload.entry],
+      };
+
+      return {
+        ...state,
+        threads,
+      };
+    }
+    case DELETE_THREAD_MESSAGE: {
+      const threadIndex = state.threads.findIndex(
+        (t) => t.id === action.payload.threadId
+      );
+
+      if (threadIndex === -1) return state;
+
+      const entryIndex = state.threads[threadIndex].messages.findIndex(
+        (m) => m.id === action.payload.entryId
+      );
+
+      if (entryIndex === -1) return state;
+
+      const threads = [...state.threads];
+      threads[threadIndex] = {
+        ...threads[threadIndex],
+        messages: threads[threadIndex].messages.filter(
+          (m) => m.id !== action.payload.entryId
+        ),
       };
 
       return {

@@ -10,6 +10,7 @@ export interface ServerState {
 export const ADD_THREAD = "ADD_THREAD";
 export const CHANGE_ACTIVE_THREAD = "CHANGE_ACTIVE_THREAD";
 export const ADD_THREAD_MESSAGE = "ADD_THREAD_MESSAGE";
+export const DELETE_THREAD_MESSAGE = "DELETE_THREAD_MESSAGE";
 export const ADD_USER = "ADD_USER";
 export const UPDATE_USER = "UPDATE_USER";
 
@@ -36,8 +37,16 @@ interface ChangeActiveChat {
 interface AddThreadMessage {
   type: typeof ADD_THREAD_MESSAGE;
   payload: {
-    threadId: Number;
+    threadId: number;
     entry: ChatEntry;
+  };
+}
+
+interface DeleteThreadMessage {
+  type: typeof DELETE_THREAD_MESSAGE;
+  payload: {
+    threadId: number;
+    entryId: number;
   };
 }
 
@@ -46,4 +55,5 @@ export type ServerActionTypes =
   | AddThread
   | UpdateUser
   | AddThreadMessage
+  | DeleteThreadMessage
   | ChangeActiveChat;
