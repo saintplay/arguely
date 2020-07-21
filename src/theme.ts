@@ -4,11 +4,11 @@ import { ThemedStyledComponentsModule } from "styled-components";
 const {
   default: styled,
   ThemeProvider: _ThemeProvider,
-} = (styledComponents as any) as ThemedStyledComponentsModule<ITheme>;
+} = (styledComponents as any) as ThemedStyledComponentsModule<Theme>;
 
 export const LEFT_BAR_BREAKPOINT = 480;
 
-type ITheme = {
+export type Theme = {
   colors: {
     content1: string;
     content2: string;
@@ -21,7 +21,7 @@ type ITheme = {
   };
 };
 
-export const DISCORD_THEME: ITheme = {
+export const DISCORD_THEME: Theme = {
   colors: {
     content1: "#4f545c",
     content2: "#36393f",
@@ -34,7 +34,7 @@ export const DISCORD_THEME: ITheme = {
   },
 };
 
-export const SLACK_THEME: ITheme = {
+export const SLACK_THEME: Theme = {
   colors: {
     content1: "#ffffff",
     content2: "rgb(63, 14, 64)",
@@ -47,7 +47,7 @@ export const SLACK_THEME: ITheme = {
   },
 };
 
-export const SKYPE_THEME: ITheme = {
+export const SKYPE_THEME: Theme = {
   colors: {
     content1: "#4f545c",
     content2: "#36393f",

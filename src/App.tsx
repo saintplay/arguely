@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
+import { ModalProvider } from "styled-react-modal";
 
 import styled, {
   ThemeProvider,
@@ -108,16 +109,18 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <RootWrapper className="grid h-screen">
-        <AppTopBar
-          onToggleLeftBar={() => dispatch(toggleLeftBar())}
-          onChangeTheme={(themeName) => dispatch(changeTheme(themeName))}
-        />
-        <WorkspaceWrapper className="grid relative">
-          <AppLeftBar />
-          <ContentWrapper>{getMainContent()}</ContentWrapper>
-        </WorkspaceWrapper>
-      </RootWrapper>
+      <ModalProvider>
+        <RootWrapper className="grid h-screen">
+          <AppTopBar
+            onToggleLeftBar={() => dispatch(toggleLeftBar())}
+            onChangeTheme={(themeName) => dispatch(changeTheme(themeName))}
+          />
+          <WorkspaceWrapper className="grid relative">
+            <AppLeftBar />
+            <ContentWrapper>{getMainContent()}</ContentWrapper>
+          </WorkspaceWrapper>
+        </RootWrapper>
+      </ModalProvider>
     </ThemeProvider>
   );
 }

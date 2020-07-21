@@ -1,12 +1,14 @@
-import React, { useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import styled from "../../theme";
+import styled, { LEFT_BAR_BREAKPOINT } from "../../theme";
+
 import { RootState } from "../../store";
 import { Thread, ThreadGroup, ThreadType } from "../../store/types";
-
-import { LEFT_BAR_BREAKPOINT } from "../../theme";
 import { changeActiveThread } from "../../store/server/actions";
+
+import AppButton from "../../components/AppButton";
+import AppModal from "../../components/AppModal";
 
 type ActualThread = {
   category: string;
@@ -20,6 +22,8 @@ export const AppLeftBar = () => {
   const threads = useSelector((state: RootState) => state.server.threads);
   const categories = useSelector((state: RootState) => state.server.categories);
   const users = useSelector((state: RootState) => state.server.users);
+
+  const [searchModal, setSearchModal] = useState(false);
 
   const onThreadClick = (threadId: number) => {
     dispatch(changeActiveThread(threadId));
@@ -47,6 +51,8 @@ export const AppLeftBar = () => {
     <AppLeftBarWrapper className="grid" opened={opened}>
       <div className="flex flex-col" style={{ width: 240 }}>
         <div style={{ flex: 1 }}>
+          <AppButton onClick={() => setSearchModal(true)}>Buscar</AppButton>
+
           {groupThreadsByCategory.map((actualThreads) => (
             <div key={actualThreads.category}>
               <div className="font-bold">{actualThreads.category}</div>
@@ -84,6 +90,14 @@ export const AppLeftBar = () => {
           )}
         </div>
       </div>
+
+      <AppModal
+        isOpen={searchModal}
+        onBackgroundClick={() => setSearchModal(false)}
+      >
+        <span>I am a modal!</span>
+        <AppButton onClick={() => setSearchModal(false)}>Close me</AppButton>
+      </AppModal>
     </AppLeftBarWrapper>
   );
 };
