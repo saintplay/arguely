@@ -13,7 +13,7 @@ import {
   User,
   ThreadByCategory,
 } from "../../store/types";
-import { changeActiveThread } from "../../store/server/actions";
+import { addThread, changeActiveThread } from "../../store/server/actions";
 import { threadsByCategorySelector } from "../../store/selectors";
 
 import { getThreadsByCategory } from "../../lib/utils";
@@ -21,8 +21,12 @@ import { getThreadsByCategory } from "../../lib/utils";
 import AppButton from "../AppButton";
 import AppModal from "../AppModal";
 import AppInput from "../AppInput";
+import { sendAddThreadMessage } from "../../lib/services/broadcast/messages";
 
 const SEARCH_DELAY_MILLISECONDS = 150;
+
+// TODO Proper validation
+const MAX_GROUP_NAME_LENGTH = 64;
 
 interface SearchResult {
   threads: ThreadByCategory[];
@@ -39,7 +43,10 @@ export const AppLeftBar = () => {
   const threadsByCategory = useSelector(threadsByCategorySelector);
 
   const [searchModal, setSearchModal] = useState(false);
+  const [createGroupModal, setCreateGroupModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchText, setSearchText] = useState("");
+  const [newGroupName, setNewGroupName] = useState("");
 
   const [threadsFounded, setThreadsFounded] = useState<Thread[]>([]);
   const [usersFounded, setUsersFounded] = useState<User[]>([]);
@@ -92,6 +99,16 @@ export const AppLeftBar = () => {
   const onCloseSearchModal = () => {
     setSearchModal(false);
     setSearchText("");
+  };
+
+  const onOpenCreateGroupModal = (category: string) => {
+    setSelectedCategory(category);
+    setCreateGroupModal(true);
+  };
+
+  const onCloseCreateGroupModal = () => {
+    setCreateGroupModal(false);
+    setNewGroupName("");
   };
 
   const onChangeSearchText = (newText: string) => {
@@ -149,16 +166,48 @@ export const AppLeftBar = () => {
     );
   };
 
+  const onCreateThreadGroup = () => {
+    if (!selectedCategory) return onCloseCreateGroupModal();
+
+    const trimmedName = newGroupName.trim();
+
+    if (trimmedName === "") return;
+
+    const actualGroupName = trimmedName.substring(0, MAX_GROUP_NAME_LENGTH);
+    const newGroupThread: ThreadGroup = {
+      id: Date.now(),
+      type: ThreadType.GROUP_THREAD,
+      name: actualGroupName,
+      category: selectedCategory,
+      messages: [],
+      members: [],
+    };
+
+    dispatch(addThread(newGroupThread));
+    dispatch(changeActiveThread(newGroupThread.id));
+    sendAddThreadMessage(newGroupThread);
+    onCloseCreateGroupModal();
+  };
+
   return (
     <AppLeftBarWrapper className="grid" opened={opened}>
       <div className="flex flex-col" style={{ width: 240 }}>
         <div style={{ flex: 1 }}>
           <AppButton onClick={() => onOpenSearchModal()}>Buscar</AppButton>
 
-          {threadsByCategory.map((actualThreads) => (
-            <div key={actualThreads.category}>
-              <div className="font-bold">{actualThreads.category}</div>
-              {actualThreads.threads.map((thread) => (
+          {threadsByCategory.map((groupByCategory) => (
+            <div key={groupByCategory.category}>
+              <div className="flex justify-between">
+                <div className="font-bold">{groupByCategory.category}</div>
+                <AppButton
+                  onClick={() =>
+                    onOpenCreateGroupModal(groupByCategory.category)
+                  }
+                >
+                  Nuevo
+                </AppButton>
+              </div>
+              {groupByCategory.threads.map((thread) => (
                 <div
                   key={thread.id}
                   className="text-center cursor-pointer py-2"
@@ -207,6 +256,24 @@ export const AppLeftBar = () => {
           <AppButton onClick={() => onCloseSearchModal()}>Close me</AppButton>
         </div>
         <div className="p-4">{renderSearchResults()}</div>
+      </AppModal>
+
+      <AppModal
+        isOpen={createGroupModal}
+        onBackgroundClick={() => onCloseCreateGroupModal()}
+        onEscapeKeydown={() => onCloseCreateGroupModal()}
+      >
+        <div className="flex">
+          <AppInput
+            value={newGroupName}
+            onChange={(e) => setNewGroupName(e.target.value)}
+          />
+          <AppButton onClick={() => onCloseCreateGroupModal()}>
+            Close me
+          </AppButton>
+        </div>
+        <div>{selectedCategory}</div>
+        <AppButton onClick={() => onCreateThreadGroup()}>Guardar</AppButton>
       </AppModal>
     </AppLeftBarWrapper>
   );

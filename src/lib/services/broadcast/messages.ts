@@ -1,6 +1,6 @@
 import { channel } from ".";
 import { BroadcastMessageType } from "./types";
-import { User, ChatEntry } from "../../../store/types";
+import { User, ChatEntry, Thread } from "../../../store/types";
 
 export function sendEnterSeverMessage(user: User) {
   channel.postMessage({
@@ -13,6 +13,13 @@ export function sendAddOrUpdateUserMessage(user: User) {
   channel.postMessage({
     type: BroadcastMessageType.ADD_OR_UPDATE_USER,
     user,
+  });
+}
+
+export function sendAddThreadMessage(newThread: Thread) {
+  channel.postMessage({
+    type: BroadcastMessageType.ADD_THREAD,
+    thread: newThread,
   });
 }
 

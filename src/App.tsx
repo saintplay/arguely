@@ -12,7 +12,12 @@ import styled, {
 } from "./theme";
 
 import { RootState } from "./store";
-import { addUser, updateUser, addThreadMessage } from "./store/server/actions";
+import {
+  addUser,
+  updateUser,
+  addThreadMessage,
+  addThread,
+} from "./store/server/actions";
 import { toggleLeftBar, changeTheme } from "./store/layout/actions";
 import { activeThreadSelector } from "./store/selectors";
 
@@ -65,6 +70,10 @@ function App() {
       }
       case BroadcastMessageType.ADD_CHAT_ENTRY: {
         dispatch(addThreadMessage(message.threadId, message.entry));
+        break;
+      }
+      case BroadcastMessageType.ADD_THREAD: {
+        dispatch(addThread(message.thread));
         break;
       }
     }
