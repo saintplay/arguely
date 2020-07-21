@@ -87,7 +87,9 @@ export const AppLeftBar = () => {
     (t): t is ThreadDirect => t.type === ThreadType.DIRECT_THREAD
   );
 
-  const actualUsers = users.filter(
+  const notMeUsers = users.filter((u) => u.id !== currentUser.id);
+
+  const actualUsers = notMeUsers.filter(
     (u) =>
       directThreads.findIndex(
         (d) => d.userId1 === u.id || d.userId2 === u.id
@@ -97,7 +99,7 @@ export const AppLeftBar = () => {
   const searchGlobally = (text: string) => {
     const regex = new RegExp(text, "i");
     setThreadsFounded(threads.filter((t) => regex.test(t.name)));
-    setUsersFounded(users.filter((u) => regex.test(u.nickname)));
+    setUsersFounded(notMeUsers.filter((u) => regex.test(u.nickname)));
     setCategoriesFounded(categories.filter((c) => regex.test(c)));
   };
 
@@ -211,6 +213,7 @@ export const AppLeftBar = () => {
         },
       ],
       unseenMessages: 0,
+      readonly: false,
     };
 
     dispatch(addThread(newGroupThread));
@@ -234,6 +237,7 @@ export const AppLeftBar = () => {
       messages: [],
       userId: user.id,
       unseenMessages: 0,
+      readonly: false,
     };
     dispatch(addPreThread(newPreThread));
     if (searchModal) {

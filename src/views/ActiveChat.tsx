@@ -124,6 +124,7 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
       >
         <AppInput
           ref={chatInputRef}
+          disabled={activeThread.readonly}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />

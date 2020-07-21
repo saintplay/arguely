@@ -50,6 +50,7 @@ interface ThreadBase {
   name: string;
   messages: ChatEntry[];
   unseenMessages: number;
+  readonly: boolean;
 }
 
 export interface ThreadDirect extends ThreadBase {

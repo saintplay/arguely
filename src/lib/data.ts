@@ -14,6 +14,8 @@ export const getUsersMock = (): User[] => [
   { ...getUserMock(), id: 5, nickname: "Usuario 5" },
 ];
 
+export const DEFAULT_THREAD_ID_TO_GO = 212;
+
 export const getThreadMock = (): Thread => ({
   id: 1,
   type: ThreadType.DIRECT_THREAD,
@@ -162,6 +164,7 @@ export const getThreadMock = (): Thread => ({
     },
   ],
   unseenMessages: 0,
+  readonly: false,
 });
 
 export const getThreadsMock = (): Thread[] => [
@@ -169,30 +172,38 @@ export const getThreadsMock = (): Thread[] => [
   // { ...getThreadMock(), id: 2, name: "Chat 2" },
   {
     ...getThreadMock(),
+    id: DEFAULT_THREAD_ID_TO_GO,
+    name: "Welcome",
+    type: ThreadType.GROUP_THREAD,
+    category: "Information",
+    readonly: true,
+  },
+  {
+    ...getThreadMock(),
     id: 3,
     name: "Chat 3",
     type: ThreadType.GROUP_THREAD,
-    category: "Anuncios",
+    category: "Off-topic",
   },
   {
     ...getThreadMock(),
     id: 4,
     name: "Chat 4",
     type: ThreadType.GROUP_THREAD,
-    category: "Entretenimiento",
+    category: "Off-topic",
   },
   {
     ...getThreadMock(),
     id: 5,
     name: "Chat 5",
     type: ThreadType.GROUP_THREAD,
-    category: "Entretenimiento",
+    category: "Off-topic",
   },
 ];
 
 export const getCategoriesMock = (): string[] => [
-  "Anuncios",
-  "Ayuda",
+  "Information",
+  "Help",
   "Chat",
-  "Entretenimiento",
+  "Off-topic",
 ];

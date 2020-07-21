@@ -38,6 +38,7 @@ import {
   sendAddOrUpdateUserMessage,
 } from "./lib/services/broadcast/messages";
 import { ThreadType } from "./store/types";
+import { DEFAULT_THREAD_ID_TO_GO } from "./lib/data";
 
 function App() {
   const dispatch = useDispatch();
@@ -126,12 +127,12 @@ function App() {
   );
 
   // Close channel only once
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    dispatch(changeActiveThread(DEFAULT_THREAD_ID_TO_GO));
+    return () => {
       channel.close();
-    },
-    []
-  );
+    };
+  }, [dispatch]);
 
   const getMainContent = () => {
     if (!activeThread) {
