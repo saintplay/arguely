@@ -30,6 +30,7 @@ import AppModal from "../AppModal";
 import AppInput from "../AppInput";
 import { sendAddThreadMessage } from "../../lib/services/broadcast/messages";
 import DirectThreadName from "../Chat/DirectThreadName";
+import UnseenNotication from "../Chat/UnseenNotification";
 
 const SEARCH_DELAY_MILLISECONDS = 150;
 
@@ -156,7 +157,10 @@ export const AppLeftBar = () => {
                 className="flex justify-between cursor-pointer py-2"
                 onClick={() => onThreadClick(thread.id)}
               >
-                <div>{thread.name}</div>
+                <div className="flex">
+                  <div>{thread.name}</div>
+                  <UnseenNotication unseenMessages={thread.unseenMessages} />
+                </div>
                 <div>{thread.category}</div>
               </div>
             ))}
@@ -206,6 +210,7 @@ export const AppLeftBar = () => {
           },
         },
       ],
+      unseenMessages: 0,
     };
 
     dispatch(addThread(newGroupThread));
@@ -228,6 +233,7 @@ export const AppLeftBar = () => {
       name: user.nickname,
       messages: [],
       userId: user.id,
+      unseenMessages: 0,
     };
     dispatch(addPreThread(newPreThread));
     if (searchModal) {
@@ -256,10 +262,11 @@ export const AppLeftBar = () => {
               {groupByCategory.threads.map((thread) => (
                 <div
                   key={thread.id}
-                  className="text-center cursor-pointer py-2"
+                  className="flex justify-between cursor-pointer py-2"
                   onClick={() => onThreadClick(thread.id)}
                 >
-                  {thread.name}
+                  <div>{thread.name}</div>
+                  <UnseenNotication unseenMessages={thread.unseenMessages} />
                 </div>
               ))}
             </div>
@@ -269,13 +276,14 @@ export const AppLeftBar = () => {
           {directThreads.map((thread) => (
             <div
               key={thread.id}
-              className="text-center cursor-pointer py-2"
+              className="flex justify-between cursor-pointer py-2"
               onClick={() => onThreadClick(thread.id)}
             >
               <DirectThreadName
                 currentUserId={currentUser.id}
                 thread={thread as ThreadDirect}
               />
+              <UnseenNotication unseenMessages={thread.unseenMessages} />
             </div>
           ))}
 

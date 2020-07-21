@@ -161,6 +161,7 @@ export const getThreadMock = (): Thread => ({
       timestamp: 1562721702367,
     },
   ],
+  unseenMessages: 0,
 });
 
 export const getThreadsMock = (): Thread[] => [

@@ -17,6 +17,7 @@ import {
   updateUser,
   addThreadMessage,
   addThread,
+  addThreadUnseen,
 } from "./store/server/actions";
 import { toggleLeftBar, changeTheme } from "./store/layout/actions";
 import { activeThreadSelector } from "./store/selectors";
@@ -70,16 +71,22 @@ function App() {
         break;
       }
       case BroadcastMessageType.ADD_CHAT_ENTRY: {
+        if (!activeThread || activeThread.id !== message.threadId) {
+          dispatch(addThreadUnseen(message.threadId));
+        }
         dispatch(addThreadMessage(message.threadId, message.entry));
         break;
       }
       case BroadcastMessageType.ADD_THREAD: {
         if (message.thread.type === ThreadType.DIRECT_THREAD) {
           if (
-            message.thread.userId1 !== currentUser.id &&
-            message.thread.userId2 !== currentUser.id
-          )
-            break;
+            message.thread.userId1 === currentUser.id ||
+            message.thread.userId2 === currentUser.id
+          ) {
+            dispatch(addThread(message.thread));
+            dispatch(addThreadUnseen(message.thread.id));
+          }
+          break;
         }
         dispatch(addThread(message.thread));
         break;

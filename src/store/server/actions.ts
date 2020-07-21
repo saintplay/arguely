@@ -8,6 +8,7 @@ import {
   CHANGE_ACTIVE_THREAD,
   DELETE_THREAD_MESSAGE,
   ADD_PRE_THREAD,
+  ADD_THREAD_UNSEEN,
 } from "./types";
 
 export function addUser(newUser: User): ServerActionTypes {
@@ -35,6 +36,15 @@ export function updateUser(updatedUser: User): ServerActionTypes {
   return {
     type: UPDATE_USER,
     payload: updatedUser,
+  };
+}
+
+export function addThreadUnseen(threadId: number): ServerActionTypes {
+  return {
+    type: ADD_THREAD_UNSEEN,
+    payload: {
+      threadId,
+    },
   };
 }
 

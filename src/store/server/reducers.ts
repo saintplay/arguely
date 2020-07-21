@@ -8,6 +8,7 @@ import {
   CHANGE_ACTIVE_THREAD,
   DELETE_THREAD_MESSAGE,
   ADD_PRE_THREAD,
+  ADD_THREAD_UNSEEN,
 } from "./types";
 import {
   getUsersMock,
@@ -66,10 +67,46 @@ export function serverReducer(
       };
     }
     case CHANGE_ACTIVE_THREAD: {
+      const threadIndex = state.threads.findIndex(
+        (t) => t.id === action.payload
+      );
+
+      if (threadIndex === -1)
+        return {
+          ...state,
+          activeThreadId: action.payload,
+          activePreThread: null,
+        };
+
+      const threads = [...state.threads];
+      threads[threadIndex] = {
+        ...threads[threadIndex],
+        unseenMessages: 0,
+      };
+
       return {
         ...state,
         activeThreadId: action.payload,
         activePreThread: null,
+        threads,
+      };
+    }
+    case ADD_THREAD_UNSEEN: {
+      const threadIndex = state.threads.findIndex(
+        (t) => t.id === action.payload.threadId
+      );
+
+      if (threadIndex === -1) return state;
+
+      const threads = [...state.threads];
+      threads[threadIndex] = {
+        ...threads[threadIndex],
+        unseenMessages: threads[threadIndex].unseenMessages + 1,
+      };
+
+      return {
+        ...state,
+        threads,
       };
     }
     case ADD_THREAD_MESSAGE: {

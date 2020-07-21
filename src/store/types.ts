@@ -49,6 +49,7 @@ interface ThreadBase {
   type: ThreadType;
   name: string;
   messages: ChatEntry[];
+  unseenMessages: number;
 }
 
 export interface ThreadDirect extends ThreadBase {
