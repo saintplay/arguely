@@ -79,7 +79,7 @@ export const AppLeftBar = () => {
             </div>
           ))}
 
-          <div className="font-bold">Usuarios</div>
+          <div className="font-bold">Otros Usuarios</div>
           {users.map(
             (user) =>
               currentUser.id !== user.id && (
