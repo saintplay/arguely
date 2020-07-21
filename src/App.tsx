@@ -35,6 +35,7 @@ import {
   sendEnterSeverMessage,
   sendAddOrUpdateUserMessage,
 } from "./lib/services/broadcast/messages";
+import { ThreadType } from "./store/types";
 
 function App() {
   const dispatch = useDispatch();
@@ -73,6 +74,13 @@ function App() {
         break;
       }
       case BroadcastMessageType.ADD_THREAD: {
+        if (message.thread.type === ThreadType.DIRECT_THREAD) {
+          if (
+            message.thread.userId1 !== currentUser.id &&
+            message.thread.userId2 !== currentUser.id
+          )
+            break;
+        }
         dispatch(addThread(message.thread));
         break;
       }
