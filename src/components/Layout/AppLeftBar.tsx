@@ -40,6 +40,8 @@ const SEARCH_DELAY_MILLISECONDS = 150;
 // TODO Proper validation
 const MAX_GROUP_NAME_LENGTH = 64;
 
+const MIN_SEARCH_BOX_HEIGHT = 200;
+
 interface SearchResult {
   threads: ThreadByCategory[];
   users: User[];
@@ -54,7 +56,7 @@ export const AppLeftBar = () => {
   const users = useSelector((state: RootState) => state.server.users);
   const threadsByCategory = useSelector(threadsByCategorySelector);
 
-  const [searchModal, setSearchModal] = useState(false);
+  const [searchModal, setSearchModal] = useState(true);
   const [createGroupModal, setCreateGroupModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchText, setSearchText] = useState("");
@@ -214,46 +216,65 @@ export const AppLeftBar = () => {
         }
       : { threads: threadsByCategory, users: [] };
 
+    if (!actualReturn.threads.length && !actualReturn.users.length) {
+      return (
+        <div className="italic text-center tx-sm py-2 opacity-75">
+          No results
+        </div>
+      );
+    }
+
     return (
       <div>
         {actualReturn.threads.map((actualThreads) => (
           <div key={actualThreads.category}>
-            <div className="font-bold">{actualThreads.category}</div>
+            {renderSeparator()}
+            <TextAccent2Container className="font-bold opacity-90">
+              {actualThreads.category}
+            </TextAccent2Container>
             {actualThreads.threads.map((thread) => (
               <div
                 key={thread.id}
-                className="flex justify-between cursor-pointer py-2"
+                className="flex justify-between text-sm cursor-pointer select-none py-1"
                 onClick={() => onThreadClick(thread.id)}
               >
                 <div className="flex">
                   <div>{thread.name}</div>
                   <UnseenNotication unseenMessages={thread.unseenMessages} />
                 </div>
-                <div>{thread.category}</div>
+                <div className="italic text-xs">{thread.category}</div>
               </div>
             ))}
           </div>
         ))}
-        {actualReturn.users.map(
-          (user) =>
-            currentUser.id !== user.id && (
-              <div
-                key={user.id}
-                className="text-center cursor-pointer py-2"
-                onClick={() => onUserPreThreadClick(user)}
-              >
-                {user.nickname}
-              </div>
-            )
+        {(actualReturn.users.length || null) && (
+          <div>
+            {renderSeparator()}
+            <TextAccent2Container className="font-bold opacity-90">
+              Users
+            </TextAccent2Container>
+            {actualReturn.users.map(
+              (user) =>
+                currentUser.id !== user.id && (
+                  <div
+                    key={user.id}
+                    className="text-sm select-none cursor-pointer py-1"
+                    onClick={() => onUserPreThreadClick(user)}
+                  >
+                    {user.nickname}
+                  </div>
+                )
+            )}
+          </div>
         )}
       </div>
     );
   };
 
-  const renderSeparator = () => {
+  const renderSeparator = (alternative?: boolean) => {
     return (
       <div className="py-4">
-        <AppHr alternative className="border-t-semi" />
+        <AppHr alternative={alternative} className="border-t-semi" />
       </div>
     );
   };
@@ -274,20 +295,17 @@ export const AppLeftBar = () => {
 
           {threadsByCategory.map((groupByCategory) => (
             <div key={groupByCategory.category}>
-              <TextAccent2Container className="font-bold flex justify-between opacity-90">
+              <TextAccent2Container
+                className="font-bold flex justify-between opacity-90 cursor-pointer select-none"
+                onClick={() => onOpenCreateGroupModal(groupByCategory.category)}
+              >
                 <div>{groupByCategory.category}</div>
-                <AppButton
-                  onClick={() =>
-                    onOpenCreateGroupModal(groupByCategory.category)
-                  }
-                >
-                  A
-                </AppButton>
+                <div>A</div>
               </TextAccent2Container>
               {groupByCategory.threads.map((thread) => (
                 <div
                   key={thread.id}
-                  className="flex justify-between text-sm cursor-pointer py-1"
+                  className="flex justify-between text-sm cursor-pointer select-none py-1"
                   onClick={() => onThreadClick(thread.id)}
                 >
                   <div>{thread.name}</div>
@@ -295,7 +313,7 @@ export const AppLeftBar = () => {
                 </div>
               ))}
 
-              {renderSeparator()}
+              {renderSeparator(true)}
             </div>
           ))}
 
@@ -320,7 +338,7 @@ export const AppLeftBar = () => {
                 </div>
               ))}
 
-              {renderSeparator()}
+              {renderSeparator(true)}
             </>
           )}
 
@@ -332,7 +350,7 @@ export const AppLeftBar = () => {
               currentUser.id !== user.id && (
                 <div
                   key={user.id}
-                  className="text-sm cursor-pointer py-1"
+                  className="text-sm select-none cursor-pointer py-1"
                   onClick={() => onUserPreThreadClick(user)}
                 >
                   {user.nickname}
@@ -344,18 +362,24 @@ export const AppLeftBar = () => {
 
       <AppModal
         isOpen={searchModal}
+        className="rounded-md"
         onBackgroundClick={() => onCloseSearchModal()}
         onEscapeKeydown={() => onCloseSearchModal()}
       >
-        <div className="flex">
-          <AppInput
-            ref={searchInputRef}
-            value={searchText}
-            onChange={(e) => onChangeSearchText(e.target.value)}
-          />
-          <AppButton onClick={() => onCloseSearchModal()}>Close me</AppButton>
+        <div style={{ minHeight: MIN_SEARCH_BOX_HEIGHT }}>
+          <div className="flex">
+            <div className="flex-grow">
+              <AppInput
+                ref={searchInputRef}
+                value={searchText}
+                placeholder="Search for users and groups"
+                onChange={(e) => onChangeSearchText(e.target.value)}
+              />
+            </div>
+            <AppButton onClick={() => onCloseSearchModal()}>c</AppButton>
+          </div>
+          <div className="px-4 pb-4">{renderSearchResults()}</div>
         </div>
-        <div className="p-4">{renderSearchResults()}</div>
       </AppModal>
 
       <AppModal
