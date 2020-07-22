@@ -24,6 +24,7 @@ import {
   CHAT_FOOTER_HEIGHT,
   APP_HEADER_HEIGHT,
 } from "../lib/ui";
+import ChatMessageEntry from "../components/Chat/ChatMessageEntry";
 
 // TODO Proper validation
 const MAX_CHAT_MESSAGE_LENGTH = 500;
@@ -101,21 +102,6 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
     dispatch(deleteThreadMessage(activeThread.id, entry.id));
   };
 
-  const renderMessage = (entry: ChatEntry) => {
-    if (entry.logType) {
-      return <div>{entry.logType}</div>;
-    } else {
-      return (
-        <div className="flex justify-between py-2">
-          <div>{entry.message}</div>
-          {entry.user.id === currentUser.id && (
-            <AppButton onClick={() => onDeleteEntry(entry)}>Eliminar</AppButton>
-          )}
-        </div>
-      );
-    }
-  };
-
   return (
     <div>
       <div style={{ height: CHAT_HEADER_HEIGHT }}>
@@ -138,7 +124,15 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
       >
         <div>
           {activeThread.messages.map((entry) => (
-            <div key={entry.id}>{renderMessage(entry)}</div>
+            <div key={entry.id}>
+              <ChatMessageEntry
+                entry={entry}
+                isOwnMessage={
+                  !entry.logType && entry.user.id === currentUser.id
+                }
+                onDeleteEntry={onDeleteEntry}
+              />
+            </div>
           ))}
         </div>
       </div>

@@ -21,7 +21,7 @@ interface ChatBase {
   logType: ChatLogType | boolean;
 }
 
-interface ChatMessage extends ChatBase {
+export interface ChatMessage extends ChatBase {
   logType: false;
   user: User;
   message: string;
