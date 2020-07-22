@@ -176,7 +176,7 @@ export const getThreadsMock = (): Thread[] => [
     name: "Welcome",
     type: ThreadType.GROUP_THREAD,
     category: "Information",
-    readonly: true,
+    readonly: false,
   },
   {
     ...getThreadMock(),

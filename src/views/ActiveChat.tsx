@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef, FunctionComponent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import styled from "../theme";
+
 import AppInput from "../components/AppInput";
 import AppButton from "../components/AppButton";
 import DirectThreadName from "../components/Chat/DirectThreadName";
+import MainContentWrapper from "../components/StyledContainer/MainContentWrapper";
+import TextAccent1Container from "../components/StyledContainer/TextAccent1Container";
+import ChatMessageEntry from "../components/Chat/ChatMessageEntry";
 
 import { RootState } from "../store";
 import { ChatEntry, Thread, ThreadType, ThreadDirect } from "../store/types";
@@ -24,7 +29,6 @@ import {
   CHAT_FOOTER_HEIGHT,
   APP_HEADER_HEIGHT,
 } from "../lib/ui";
-import ChatMessageEntry from "../components/Chat/ChatMessageEntry";
 
 // TODO Proper validation
 const MAX_CHAT_MESSAGE_LENGTH = 500;
@@ -124,16 +128,21 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
 
   return (
     <div>
-      <div style={{ height: CHAT_HEADER_HEIGHT }}>
+      <ChatHeaderWrapper
+        className="flex items-center border-b px-3"
+        style={{ height: CHAT_HEADER_HEIGHT }}
+      >
         {activeThread.type === ThreadType.DIRECT_THREAD ? (
           <DirectThreadName
             currentUserId={currentUser.id}
             thread={activeThread}
           />
         ) : (
-          <div>{activeThread.name}</div>
+          <TextAccent1Container className="font-bold">
+            {activeThread.name}
+          </TextAccent1Container>
         )}
-      </div>
+      </ChatHeaderWrapper>
 
       <div
         ref={chatWrapperRef}
@@ -159,21 +168,29 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
           ))}
         </div>
       </div>
-      <div
-        className="flex items-center"
+      <MainContentWrapper
+        className="flex items-center px-2"
         onKeyDown={(e) => e.key === "Enter" && startEnteringMessage()}
-        style={{ height: CHAT_FOOTER_HEIGHT, backgroundColor: "tomato" }}
+        style={{ height: CHAT_FOOTER_HEIGHT }}
       >
-        <AppInput
-          ref={chatInputRef}
-          disabled={activeThread.readonly}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <AppButton onClick={() => startEnteringMessage()}>Send</AppButton>
-      </div>
+        <div className="flex-grow">
+          <AppInput
+            ref={chatInputRef}
+            disabled={activeThread.readonly}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+        </div>
+        <div className="px-2">
+          <AppButton onClick={() => startEnteringMessage()}>S</AppButton>
+        </div>
+      </MainContentWrapper>
     </div>
   );
 };
+
+const ChatHeaderWrapper = styled.div`
+  border-bottom-color: ${(props) => props.theme.colors.border1};
+`;
 
 export default ActiveChat;

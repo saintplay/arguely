@@ -21,5 +21,9 @@
   scrollbar-color: #333 transparent;
 }
 
+input:focus {
+   outline:0;
+}
+
 @tailwind components;
 @tailwind utilities;

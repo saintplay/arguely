@@ -10,7 +10,9 @@ import {
 
 import AppButton from "../AppButton";
 import AppHr from "../AppHr";
-import MainContentWrapper from "../MainContentWrapper";
+import MainContentWrapper from "../StyledContainer/MainContentWrapper";
+import TextDimmed1Container from "../StyledContainer/TextDimmed1Container";
+import TextAccent1Container from "../StyledContainer/TextAccent1Container";
 
 import { timestampToReadableStr } from "../../lib/utils";
 
@@ -63,22 +65,22 @@ const ChatMessageEntry: FunctionComponent<ChatMessageEntryProps> = ({
       <div className="flex-grow">
         {showHeader && (
           <div className="flex items-center">
-            <div
+            <TextAccent1Container
               className="font-bold cursor-pointer pr-2"
               onClick={() => onClickUser(chatEntry.user.id)}
             >
               {chatEntry.user.nickname}
-            </div>
-            <div className="text-xs">
+            </TextAccent1Container>
+            <TextDimmed1Container className="text-xs">
               {timestampToReadableStr(entry.timestamp)}
-            </div>
+            </TextDimmed1Container>
           </div>
         )}
         <div>{chatEntry.message}</div>
       </div>
       <div>
         {isOwnMessage && (
-          <AppButton onClick={() => onDeleteEntry(entry)}>Eliminar</AppButton>
+          <AppButton onClick={() => onDeleteEntry(entry)}>E</AppButton>
         )}
       </div>
     </div>
@@ -99,13 +101,15 @@ const ChatMessageEntry: FunctionComponent<ChatMessageEntryProps> = ({
 
   const renderLogMessage = () => (
     <div className="relative flex items-center my-3" style={{ height: 40 }}>
-      <AppHr className="flex-grow border border-semi" />
+      <AppHr className="flex-grow border-t-semi" />
       <div className="absolute inset-0 flex justify-center">
         <MainContentWrapper className="text-center px-3">
-          <div className="text-xs">
+          <TextDimmed1Container className="text-xs">
             {timestampToReadableStr(entry.timestamp)}
+          </TextDimmed1Container>
+          <div className="text-xs opacity-75">
+            {messageLogToStr(entry as ChatLog)}
           </div>
-          <div className="text-sm">{messageLogToStr(entry as ChatLog)}</div>
         </MainContentWrapper>
       </div>
     </div>

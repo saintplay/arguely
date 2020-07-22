@@ -16,23 +16,29 @@ export type Theme = {
     content4: string;
     text1: string;
     textaccent1: string;
+    textdimmed1: string;
     text2: string;
     textaccent2: string;
     border1: string;
+    inputbackground: string;
+    inputborder: string;
   };
 };
 
 export const DISCORD_THEME: Theme = {
   colors: {
-    content1: "#4f545c",
+    content1: "rgb(54, 57, 63)",
     content2: "#36393f",
     content3: "#2f3136",
     content4: "#202225",
     text1: "#dcddde",
     textaccent1: "#ffffff",
+    textdimmed1: "rgb(114, 118, 125)",
     text2: "#dcddde",
     textaccent2: "#ffffff",
     border1: "rgb(102, 102, 102)",
+    inputbackground: "rgb(64, 68, 75)",
+    inputborder: "rgb(64, 68, 75)",
   },
 };
 
@@ -44,9 +50,12 @@ export const SLACK_THEME: Theme = {
     content4: "rgb(53, 13, 54)",
     text1: "rgb(29, 28, 29)",
     textaccent1: "rgb(29, 28, 29)",
+    textdimmed1: "rgb(97, 96, 97)",
     text2: "rgb(207, 195, 207)",
     textaccent2: "#ffffff",
     border1: "rgb(221, 221, 221)",
+    inputbackground: "#ffffff",
+    inputborder: "rgb(29, 28, 29)",
   },
 };
 
