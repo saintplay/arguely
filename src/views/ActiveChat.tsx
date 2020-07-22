@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "../theme";
 
 import AppInput from "../components/AppInput";
-import AppButton from "../components/AppButton";
 import DirectThreadName from "../components/Chat/DirectThreadName";
 import MainContentWrapper from "../components/StyledContainer/MainContentWrapper";
 import TextAccent1Container from "../components/StyledContainer/TextAccent1Container";
@@ -29,6 +28,7 @@ import {
   CHAT_FOOTER_HEIGHT,
   APP_HEADER_HEIGHT,
 } from "../lib/ui";
+import AppIcon from "../components/AppIcon";
 
 // TODO Proper validation
 const MAX_CHAT_MESSAGE_LENGTH = 500;
@@ -179,11 +179,16 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
             ref={chatInputRef}
             disabled={activeThread.readonly}
             value={message}
+            after={
+              <div
+                className="cursor-pointer px-2"
+                onClick={() => startEnteringMessage()}
+              >
+                <AppIcon fill={message ? "accent" : "disabled"}>send</AppIcon>
+              </div>
+            }
             onChange={(e) => setMessage(e.target.value)}
           />
-        </div>
-        <div className="px-2">
-          <AppButton onClick={() => startEnteringMessage()}>S</AppButton>
         </div>
       </MainContentWrapper>
     </div>

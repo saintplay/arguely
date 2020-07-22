@@ -68,7 +68,7 @@ function AppTopBar({
 
   return (
     <AppTopBarWrapper
-      className="flex items-center"
+      className="flex justify-center items-center"
       style={{ height: APP_HEADER_HEIGHT }}
     >
       <div
