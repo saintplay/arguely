@@ -1,3 +1,7 @@
+import format from "date-fns/format";
+import isToday from "date-fns/isToday";
+import isThisWeek from "date-fns/isThisWeek";
+import isThisYear from "date-fns/isThisYear";
 import uniqBy from "lodash.uniqby";
 
 import {
@@ -20,4 +24,13 @@ export const getThreadsByCategory = (
       threads: groupThreads.filter((t) => t.category === category),
     }))
     .filter((a) => a.threads.length);
+};
+
+export const timestampToReadableStr = (timestamp: number) => {
+  if (!timestamp) return null;
+
+  if (isToday(timestamp)) return format(timestamp, "hh:mm a");
+  if (isThisWeek(timestamp)) return format(timestamp, "dddd hh:mm a");
+  if (isThisYear(timestamp)) return format(timestamp, "mmm dd hh:mm a");
+  return format(timestamp, "dd/mm/yyyy hh:mm a");
 };

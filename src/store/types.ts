@@ -41,7 +41,7 @@ interface ChatLogUserJoined extends ChatLogBase {
   };
 }
 
-type ChatLog = ChatLogCreated | ChatLogUserJoined;
+export type ChatLog = ChatLogCreated | ChatLogUserJoined;
 export type ChatEntry = ChatMessage | ChatLog;
 
 interface ThreadBase {

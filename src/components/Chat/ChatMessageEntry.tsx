@@ -1,7 +1,13 @@
 import React, { FunctionComponent } from "react";
 
-import { ChatEntry, ChatMessage } from "../../store/types";
+import {
+  ChatEntry,
+  ChatMessage,
+  ChatLog,
+  ChatLogType,
+} from "../../store/types";
 import AppButton from "../AppButton";
+import { timestampToReadableStr } from "../../lib/utils";
 
 const USER_AVATAR_SIZE = 32;
 
@@ -20,58 +26,71 @@ const ChatMessageEntry: FunctionComponent<ChatMessageEntryProps> = ({
   onDeleteEntry = () => null,
 }) => {
   const renderChatMessage = (chatEntry: ChatMessage) => (
-    <div>
-      <div className="flex items-start">
-        {showHeader ? (
-          <div onClick={() => onClickUser(entry.id)}>
-            {/* <img
+    <div className="flex justify-between">
+      {showHeader ? (
+        <div
+          style={{
+            width: USER_AVATAR_SIZE,
+            minWidth: USER_AVATAR_SIZE,
+            height: USER_AVATAR_SIZE,
+          }}
+          onClick={() => onClickUser(entry.id)}
+        >
+          {/* <img
               className="rounded-circle mr-2"
               src={entry.data.avatar}
               width={`${USER_AVATAR_SIZE}px`}
               style={{ minWidth: USER_AVATAR_SIZE }}
               alt={entry.data.nickname}
             /> */}
-          </div>
-        ) : (
-          <div
-            className="inline-block mr-2"
-            style={{
-              width: USER_AVATAR_SIZE,
-              minWidth: USER_AVATAR_SIZE,
-              height: USER_AVATAR_SIZE,
-            }}
-          ></div>
-        )}
-        <div className="flex-grow" style={{ minHeight: USER_AVATAR_SIZE }}>
-          {showHeader && (
-            <div onClick={() => onClickUser(chatEntry.user.id)}>
-              <div
-                className="inline-block text-xs text-green"
-                style={{ width: 180 }}
-              >
-                {chatEntry.user.nickname}
-              </div>
-            </div>
-          )}
-          <div className="flex justify-between">
-            <div
-            // className={classNames(
-            //   "inline-block bg-dark-gray text-xs",
-            //   "rounded-r-lg rounded-bl-lg p-2"
-            // )}
-            >
-              {chatEntry.message}
-            </div>
-            {isOwnMessage && (
-              <AppButton onClick={() => onDeleteEntry(entry)}>
-                Eliminar
-              </AppButton>
-            )}
-          </div>
+          av
         </div>
+      ) : (
+        <div
+          style={{
+            width: USER_AVATAR_SIZE,
+            minWidth: USER_AVATAR_SIZE,
+          }}
+        >
+          &nbsp;
+        </div>
+      )}
+      <div className="flex-grow">
+        {showHeader && (
+          <div className="flex items-center">
+            <div
+              className="font-bold cursor-pointer pr-2"
+              onClick={() => onClickUser(chatEntry.user.id)}
+            >
+              {chatEntry.user.nickname}
+            </div>
+            <div className="text-xs">
+              {timestampToReadableStr(entry.timestamp)}
+            </div>
+          </div>
+        )}
+        <div>{chatEntry.message}</div>
+      </div>
+      <div>
+        {isOwnMessage && (
+          <AppButton onClick={() => onDeleteEntry(entry)}>Eliminar</AppButton>
+        )}
       </div>
     </div>
   );
+
+  const messageLogToStr = (chatEntry: ChatLog) => {
+    switch (chatEntry.logType) {
+      case ChatLogType.CHAT_CREATED:
+        return <span>El chat ha sido creado</span>;
+      case ChatLogType.USER_JOINED:
+        return (
+          <span>
+            {`El usuario ${chatEntry.payload.user.nickname} se ha unido al grupo`}
+          </span>
+        );
+    }
+  };
 
   const renderLogMessage = () => (
     <div>
@@ -79,11 +98,9 @@ const ChatMessageEntry: FunctionComponent<ChatMessageEntryProps> = ({
         {/* <div className={classNames("text-xs text-center opacity-75")}> */}
         <div>
           <div className="text-green">
-            {/* {timestampToReadableStr(entry.data.timestamp)} */}
+            {timestampToReadableStr(entry.timestamp)}
           </div>
-          <div className="text-white">
-            {/* {messageLogToStr(entry.data.message, entry.data.payload)} */}
-          </div>
+          <div className="text-white">{messageLogToStr(entry as ChatLog)}</div>
         </div>
       </div>
     </div>
@@ -94,23 +111,7 @@ const ChatMessageEntry: FunctionComponent<ChatMessageEntryProps> = ({
     return renderChatMessage(entry);
   };
 
-  return (
-    <div>
-      <div>
-        <div
-        // className={classNames(
-        //   "text-xs text-center opacity-75 py-2",
-        //   timestampVisible ? "text-green" : "text-transparent"
-        // )}
-        >
-          {/* {timestampVisible
-            ? timestampToReadableStr(entry.data.timestamp)
-            : "-"} */}
-        </div>
-      </div>
-      <div>{getActualMessage()}</div>
-    </div>
-  );
+  return getActualMessage();
 };
 
 export default ChatMessageEntry;

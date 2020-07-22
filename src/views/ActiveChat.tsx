@@ -25,9 +25,11 @@ import {
   APP_HEADER_HEIGHT,
 } from "../lib/ui";
 import ChatMessageEntry from "../components/Chat/ChatMessageEntry";
+import { number } from "prop-types";
 
 // TODO Proper validation
 const MAX_CHAT_MESSAGE_LENGTH = 500;
+const MAX_TIMESTAMP_DIFFERENCE = 10 * 60 * 1000;
 
 interface ActiveChatProps {
   activeThread: Thread;
@@ -53,7 +55,6 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
 
   const updateScroll = () => {
     if (chatWrapperRef.current) {
-      console.log(chatWrapperRef.current.scrollHeight);
       chatWrapperRef.current.scrollTop = chatWrapperRef.current.scrollHeight;
     }
   };
@@ -100,6 +101,23 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
     }
   };
 
+  const shouldEntryHaveHeader = (index: number) => {
+    if (index === 0) return true;
+    const entry = activeThread.messages[index];
+    const lastEntry = activeThread.messages[index - 1];
+
+    if (
+      !entry.logType &&
+      !lastEntry.logType &&
+      entry.user.id === lastEntry.user.id
+    ) {
+      if (entry.timestamp - lastEntry.timestamp < MAX_TIMESTAMP_DIFFERENCE) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   const onDeleteEntry = (entry: ChatEntry) => {
     dispatch(deleteThreadMessage(activeThread.id, entry.id));
   };
@@ -127,10 +145,11 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
         className="px-3 overflow-y-scroll"
       >
         <div>
-          {activeThread.messages.map((entry) => (
+          {activeThread.messages.map((entry, index) => (
             <div key={entry.id}>
               <ChatMessageEntry
                 entry={entry}
+                showHeader={shouldEntryHaveHeader(index)}
                 isOwnMessage={
                   !entry.logType && entry.user.id === currentUser.id
                 }

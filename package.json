@@ -18,6 +18,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/styled-components": "^5.1.1",
     "broadcast-channel": "^3.1.0",
+    "date-fns": "^2.15.0",
     "lodash.debounce": "^4.0.8",
     "lodash.flatten": "^4.4.0",
     "lodash.get": "^4.4.2",
