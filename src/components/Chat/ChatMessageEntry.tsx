@@ -89,13 +89,9 @@ const ChatMessageEntry: FunctionComponent<ChatMessageEntryProps> = ({
   const messageLogToStr = (chatEntry: ChatLog) => {
     switch (chatEntry.logType) {
       case ChatLogType.CHAT_CREATED:
-        return <span>El chat ha sido creado</span>;
+        return <span>Chat was created</span>;
       case ChatLogType.USER_JOINED:
-        return (
-          <span>
-            {`El usuario ${chatEntry.payload.user.nickname} se ha unido al grupo`}
-          </span>
-        );
+        return <span>{`${chatEntry.payload.user.nickname} joined`}</span>;
     }
   };
 

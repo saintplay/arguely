@@ -249,7 +249,7 @@ export const AppLeftBar = () => {
   };
 
   return (
-    <AppLeftBarWrapper className="realtive grid" opened={opened}>
+    <AppLeftBarWrapper className="realtive z-10 grid" opened={opened}>
       {opened && (
         <div
           className="absolute inset-y-0 left-0 z-10 w-screen"
