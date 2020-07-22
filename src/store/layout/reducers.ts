@@ -5,6 +5,7 @@ import {
   LayoutActionTypes,
   TOGGLE_LEFT_BAR,
   CHANGE_THEME,
+  HIDE_LEFT_BAR,
 } from "./types";
 import { DEFAULT_THEME, APP_THEMES } from "../../theme";
 
@@ -22,6 +23,12 @@ export function layoutReducer(
       return {
         ...state,
         opened: !state.opened,
+      };
+    }
+    case HIDE_LEFT_BAR: {
+      return {
+        ...state,
+        opened: false,
       };
     }
     case CHANGE_THEME: {

@@ -33,6 +33,7 @@ interface ActiveChatProps {
 }
 const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
   const dispatch = useDispatch();
+  const opened = useSelector((state: RootState) => state.layout.opened);
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
   const [message, setMessage] = useState("");
@@ -44,10 +45,10 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
   }, []);
 
   useEffect(() => {
-    if (chatInputRef.current) {
+    if (!opened && chatInputRef.current) {
       chatInputRef.current.focus();
     }
-  }, [activeThread]);
+  }, [activeThread, opened]);
 
   const updateScroll = () => {
     if (!chatWrapperRef.current) return;

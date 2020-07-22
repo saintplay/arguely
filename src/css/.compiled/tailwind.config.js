@@ -12,6 +12,21 @@ var _default = {
       auto: "auto",
       full: "100%",
       screen: "100vh"
+    },
+    width: {
+      auto: "auto",
+      full: "100%",
+      screen: "100vw"
+    },
+    zIndex: {
+      "0": 0,
+      "10": 10,
+      "20": 20,
+      "30": 30,
+      // This is the modal level
+      "40": 40,
+      "50": 50,
+      "100": 100
     }
   },
   variants: {

@@ -21,7 +21,7 @@ import {
   changeActiveThread,
   addPreThread,
 } from "../../store/server/actions";
-import { toggleLeftBar } from "../../store/layout/actions";
+import { hideLeftBar } from "../../store/layout/actions";
 import { threadsByCategorySelector } from "../../store/selectors";
 
 import { getThreadsByCategory } from "../../lib/utils";
@@ -111,6 +111,7 @@ export const AppLeftBar = () => {
   const onCloseSearchModal = () => {
     setSearchModal(false);
     setSearchText("");
+    onHideLeftBar();
   };
 
   const onOpenCreateGroupModal = (category: string) => {
@@ -121,6 +122,7 @@ export const AppLeftBar = () => {
   const onCloseCreateGroupModal = () => {
     setCreateGroupModal(false);
     setNewGroupName("");
+    onHideLeftBar();
   };
 
   const onChangeSearchText = (newText: string) => {
@@ -229,9 +231,7 @@ export const AppLeftBar = () => {
     if (searchModal) {
       onCloseSearchModal();
     }
-    if (opened) {
-      dispatch(toggleLeftBar());
-    }
+    onHideLeftBar();
   };
 
   const onUserPreThreadClick = (user: User) => {
@@ -249,14 +249,24 @@ export const AppLeftBar = () => {
     if (searchModal) {
       onCloseSearchModal();
     }
-    if (opened) {
-      dispatch(toggleLeftBar());
-    }
+    onHideLeftBar();
+  };
+
+  const onHideLeftBar = () => {
+    dispatch(hideLeftBar());
   };
 
   return (
-    <AppLeftBarWrapper className="grid" opened={opened}>
-      <div className="flex flex-col" style={{ width: 240 }}>
+    <AppLeftBarWrapper className="realtive grid" opened={opened}>
+      {opened && (
+        <div
+          className="absolute inset-y-0 left-0 z-10 w-screen"
+          onClick={() => onHideLeftBar()}
+        >
+          &nbsp;
+        </div>
+      )}
+      <div className="relative flex flex-col z-20" style={{ width: 240 }}>
         <div style={{ flex: 1 }}>
           <AppButton onClick={() => onOpenSearchModal()}>Buscar</AppButton>
 
