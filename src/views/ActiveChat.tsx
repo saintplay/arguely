@@ -153,7 +153,7 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <AppButton onClick={() => startEnteringMessage()}>Enviar</AppButton>
+        <AppButton onClick={() => startEnteringMessage()}>Send</AppButton>
       </div>
     </div>
   );

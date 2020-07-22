@@ -268,7 +268,7 @@ export const AppLeftBar = () => {
       )}
       <div className="relative flex flex-col z-20" style={{ width: 240 }}>
         <div style={{ flex: 1 }}>
-          <AppButton onClick={() => onOpenSearchModal()}>Buscar</AppButton>
+          <AppButton onClick={() => onOpenSearchModal()}>Search</AppButton>
 
           {threadsByCategory.map((groupByCategory) => (
             <div key={groupByCategory.category}>
@@ -279,7 +279,7 @@ export const AppLeftBar = () => {
                     onOpenCreateGroupModal(groupByCategory.category)
                   }
                 >
-                  Nuevo
+                  Add
                 </AppButton>
               </div>
               {groupByCategory.threads.map((thread) => (
