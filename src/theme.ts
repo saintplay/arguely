@@ -20,6 +20,7 @@ export type Theme = {
     text2: string;
     textaccent2: string;
     border1: string;
+    border2: string;
     inputbackground: string;
     inputborder: string;
   };
@@ -29,14 +30,15 @@ export const DISCORD_THEME: Theme = {
   colors: {
     content1: "rgb(54, 57, 63)",
     content2: "#36393f",
-    content3: "#2f3136",
-    content4: "#202225",
+    content3: "#202225",
+    content4: "#2f3136",
     text1: "#dcddde",
     textaccent1: "#ffffff",
     textdimmed1: "rgb(114, 118, 125)",
     text2: "#dcddde",
     textaccent2: "#ffffff",
     border1: "rgb(102, 102, 102)",
+    border2: "rgb(64, 64, 64)",
     inputbackground: "rgb(64, 68, 75)",
     inputborder: "rgb(64, 68, 75)",
   },
@@ -54,6 +56,7 @@ export const SLACK_THEME: Theme = {
     text2: "rgb(207, 195, 207)",
     textaccent2: "#ffffff",
     border1: "rgb(221, 221, 221)",
+    border2: "rgb(82,38,83)",
     inputbackground: "#ffffff",
     inputborder: "rgb(29, 28, 29)",
   },
@@ -63,7 +66,7 @@ export const APP_THEMES = {
   DISCORD: "DISCORD",
   SLACK: "SLACK",
 };
-export const DEFAULT_THEME = APP_THEMES.SLACK;
+export const DEFAULT_THEME = APP_THEMES.DISCORD;
 
 export const ThemeProvider = _ThemeProvider;
 export default styled;

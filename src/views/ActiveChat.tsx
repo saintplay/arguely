@@ -136,6 +136,7 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
           <DirectThreadName
             currentUserId={currentUser.id}
             thread={activeThread}
+            accent
           />
         ) : (
           <TextAccent1Container className="font-bold">

@@ -25,13 +25,15 @@ import { hideLeftBar } from "../../store/layout/actions";
 import { threadsByCategorySelector } from "../../store/selectors";
 
 import { getThreadsByCategory } from "../../lib/utils";
+import { sendAddThreadMessage } from "../../lib/services/broadcast/messages";
 
 import AppButton from "../AppButton";
 import AppModal from "../AppModal";
 import AppInput from "../AppInput";
-import { sendAddThreadMessage } from "../../lib/services/broadcast/messages";
+import AppHr from "../AppHr";
 import DirectThreadName from "../Chat/DirectThreadName";
 import UnseenNotication from "../Chat/UnseenNotification";
+import TextAccent2Container from "../StyledContainer/TextAccent2Container";
 
 const SEARCH_DELAY_MILLISECONDS = 150;
 
@@ -130,63 +132,6 @@ export const AppLeftBar = () => {
     delayedSearch(newText.trim());
   };
 
-  const renderSearchResults = () => {
-    const categoryThreads = flatten(
-      categoriesFounded.map((c) => {
-        const threadByCategory = threadsByCategory.find(
-          (a) => a.category === c
-        );
-        return threadByCategory ? threadByCategory.threads : [];
-      })
-    );
-
-    const actualThreadsFounded = [...categoryThreads, ...threadsFounded];
-    const groupThreads: ThreadGroup[] = actualThreadsFounded.filter(
-      (t): t is ThreadGroup => t.type === ThreadType.GROUP_THREAD
-    );
-    const actualReturn: SearchResult = searchText
-      ? {
-          threads: getThreadsByCategory(groupThreads, categories),
-          users: usersFounded,
-        }
-      : { threads: threadsByCategory, users: [] };
-
-    return (
-      <div>
-        {actualReturn.threads.map((actualThreads) => (
-          <div key={actualThreads.category}>
-            <div className="font-bold">{actualThreads.category}</div>
-            {actualThreads.threads.map((thread) => (
-              <div
-                key={thread.id}
-                className="flex justify-between cursor-pointer py-2"
-                onClick={() => onThreadClick(thread.id)}
-              >
-                <div className="flex">
-                  <div>{thread.name}</div>
-                  <UnseenNotication unseenMessages={thread.unseenMessages} />
-                </div>
-                <div>{thread.category}</div>
-              </div>
-            ))}
-          </div>
-        ))}
-        {actualReturn.users.map(
-          (user) =>
-            currentUser.id !== user.id && (
-              <div
-                key={user.id}
-                className="text-center cursor-pointer py-2"
-                onClick={() => onUserPreThreadClick(user)}
-              >
-                {user.nickname}
-              </div>
-            )
-        )}
-      </div>
-    );
-  };
-
   const onCreateThreadGroup = () => {
     if (!selectedCategory) return onCloseCreateGroupModal();
 
@@ -248,6 +193,71 @@ export const AppLeftBar = () => {
     dispatch(hideLeftBar());
   };
 
+  const renderSearchResults = () => {
+    const categoryThreads = flatten(
+      categoriesFounded.map((c) => {
+        const threadByCategory = threadsByCategory.find(
+          (a) => a.category === c
+        );
+        return threadByCategory ? threadByCategory.threads : [];
+      })
+    );
+
+    const actualThreadsFounded = [...categoryThreads, ...threadsFounded];
+    const groupThreads: ThreadGroup[] = actualThreadsFounded.filter(
+      (t): t is ThreadGroup => t.type === ThreadType.GROUP_THREAD
+    );
+    const actualReturn: SearchResult = searchText
+      ? {
+          threads: getThreadsByCategory(groupThreads, categories),
+          users: usersFounded,
+        }
+      : { threads: threadsByCategory, users: [] };
+
+    return (
+      <div>
+        {actualReturn.threads.map((actualThreads) => (
+          <div key={actualThreads.category}>
+            <div className="font-bold">{actualThreads.category}</div>
+            {actualThreads.threads.map((thread) => (
+              <div
+                key={thread.id}
+                className="flex justify-between cursor-pointer py-2"
+                onClick={() => onThreadClick(thread.id)}
+              >
+                <div className="flex">
+                  <div>{thread.name}</div>
+                  <UnseenNotication unseenMessages={thread.unseenMessages} />
+                </div>
+                <div>{thread.category}</div>
+              </div>
+            ))}
+          </div>
+        ))}
+        {actualReturn.users.map(
+          (user) =>
+            currentUser.id !== user.id && (
+              <div
+                key={user.id}
+                className="text-center cursor-pointer py-2"
+                onClick={() => onUserPreThreadClick(user)}
+              >
+                {user.nickname}
+              </div>
+            )
+        )}
+      </div>
+    );
+  };
+
+  const renderSeparator = () => {
+    return (
+      <div className="py-4">
+        <AppHr alternative className="border-t-semi" />
+      </div>
+    );
+  };
+
   return (
     <AppLeftBarWrapper className="realtive z-10 grid" opened={opened}>
       {opened && (
@@ -259,56 +269,70 @@ export const AppLeftBar = () => {
         </div>
       )}
       <div className="relative flex flex-col z-20" style={{ width: 240 }}>
-        <div style={{ flex: 1 }}>
+        <div className="flex-grow px-3 py-2">
           <AppButton onClick={() => onOpenSearchModal()}>Search</AppButton>
 
           {threadsByCategory.map((groupByCategory) => (
             <div key={groupByCategory.category}>
-              <div className="flex justify-between">
-                <div className="font-bold">{groupByCategory.category}</div>
+              <TextAccent2Container className="font-bold flex justify-between opacity-90">
+                <div>{groupByCategory.category}</div>
                 <AppButton
                   onClick={() =>
                     onOpenCreateGroupModal(groupByCategory.category)
                   }
                 >
-                  Add
+                  A
                 </AppButton>
-              </div>
+              </TextAccent2Container>
               {groupByCategory.threads.map((thread) => (
                 <div
                   key={thread.id}
-                  className="flex justify-between cursor-pointer py-2"
+                  className="flex justify-between text-sm cursor-pointer py-1"
                   onClick={() => onThreadClick(thread.id)}
                 >
                   <div>{thread.name}</div>
                   <UnseenNotication unseenMessages={thread.unseenMessages} />
                 </div>
               ))}
+
+              {renderSeparator()}
             </div>
           ))}
 
-          <div className="font-bold">Directos</div>
-          {directThreads.map((thread) => (
-            <div
-              key={thread.id}
-              className="flex justify-between cursor-pointer py-2"
-              onClick={() => onThreadClick(thread.id)}
-            >
-              <DirectThreadName
-                currentUserId={currentUser.id}
-                thread={thread as ThreadDirect}
-              />
-              <UnseenNotication unseenMessages={thread.unseenMessages} />
-            </div>
-          ))}
+          {(directThreads.length || null) && (
+            <>
+              <TextAccent2Container className="font-bold opacity-90">
+                Private Messages
+              </TextAccent2Container>
+              {directThreads.map((thread) => (
+                <div
+                  key={thread.id}
+                  className="flex justify-between cursor-pointer py-1"
+                  onClick={() => onThreadClick(thread.id)}
+                >
+                  <div className="text-sm">
+                    <DirectThreadName
+                      currentUserId={currentUser.id}
+                      thread={thread as ThreadDirect}
+                    />
+                  </div>
+                  <UnseenNotication unseenMessages={thread.unseenMessages} />
+                </div>
+              ))}
 
-          <div className="font-bold">Otros Usuarios</div>
+              {renderSeparator()}
+            </>
+          )}
+
+          <TextAccent2Container className="font-bold opacity-90">
+            Other Users
+          </TextAccent2Container>
           {actualUsers.map(
             (user) =>
               currentUser.id !== user.id && (
                 <div
                   key={user.id}
-                  className="text-center cursor-pointer py-2"
+                  className="text-sm cursor-pointer py-1"
                   onClick={() => onUserPreThreadClick(user)}
                 >
                   {user.nickname}

@@ -610,20 +610,44 @@ input:focus {
   --bg-opacity: 0 !important;
 }
 
+.bg-opacity-5 {
+  --bg-opacity: .05 !important;
+}
+
+.bg-opacity-15 {
+  --bg-opacity: .15 !important;
+}
+
 .bg-opacity-25 {
-  --bg-opacity: 0.25 !important;
+  --bg-opacity: .25 !important;
+}
+
+.bg-opacity-35 {
+  --bg-opacity: .35 !important;
 }
 
 .bg-opacity-50 {
-  --bg-opacity: 0.5 !important;
+  --bg-opacity: .5 !important;
 }
 
 .bg-opacity-75 {
-  --bg-opacity: 0.75 !important;
+  --bg-opacity: .75 !important;
+}
+
+.bg-opacity-80 {
+  --bg-opacity: .80 !important;
+}
+
+.bg-opacity-90 {
+  --bg-opacity: .90 !important;
 }
 
 .bg-opacity-100 {
   --bg-opacity: 1 !important;
+}
+
+.bg-opacity-inherit {
+  --bg-opacity: inherit !important;
 }
 
 .bg-bottom {
@@ -678,20 +702,44 @@ input:focus {
   --border-opacity: 0 !important;
 }
 
+.border-opacity-5 {
+  --border-opacity: .05 !important;
+}
+
+.border-opacity-15 {
+  --border-opacity: .15 !important;
+}
+
 .border-opacity-25 {
-  --border-opacity: 0.25 !important;
+  --border-opacity: .25 !important;
+}
+
+.border-opacity-35 {
+  --border-opacity: .35 !important;
 }
 
 .border-opacity-50 {
-  --border-opacity: 0.5 !important;
+  --border-opacity: .5 !important;
 }
 
 .border-opacity-75 {
-  --border-opacity: 0.75 !important;
+  --border-opacity: .75 !important;
+}
+
+.border-opacity-80 {
+  --border-opacity: .80 !important;
+}
+
+.border-opacity-90 {
+  --border-opacity: .90 !important;
 }
 
 .border-opacity-100 {
   --border-opacity: 1 !important;
+}
+
+.border-opacity-inherit {
+  --border-opacity: inherit !important;
 }
 
 .rounded-none {
@@ -2602,20 +2650,44 @@ input:focus {
   opacity: 0 !important;
 }
 
+.opacity-5 {
+  opacity: .05 !important;
+}
+
+.opacity-15 {
+  opacity: .15 !important;
+}
+
 .opacity-25 {
-  opacity: 0.25 !important;
+  opacity: .25 !important;
+}
+
+.opacity-35 {
+  opacity: .35 !important;
 }
 
 .opacity-50 {
-  opacity: 0.5 !important;
+  opacity: .5 !important;
 }
 
 .opacity-75 {
-  opacity: 0.75 !important;
+  opacity: .75 !important;
+}
+
+.opacity-80 {
+  opacity: .80 !important;
+}
+
+.opacity-90 {
+  opacity: .90 !important;
 }
 
 .opacity-100 {
   opacity: 1 !important;
+}
+
+.opacity-inherit {
+  opacity: inherit !important;
 }
 
 .overflow-auto {
