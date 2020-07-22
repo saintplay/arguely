@@ -21,6 +21,7 @@ import {
   changeActiveThread,
   addPreThread,
 } from "../../store/server/actions";
+import { toggleLeftBar } from "../../store/layout/actions";
 import { threadsByCategorySelector } from "../../store/selectors";
 
 import { getThreadsByCategory } from "../../lib/utils";
@@ -224,8 +225,12 @@ export const AppLeftBar = () => {
 
   const onThreadClick = (threadId: number) => {
     dispatch(changeActiveThread(threadId));
+
     if (searchModal) {
       onCloseSearchModal();
+    }
+    if (opened) {
+      dispatch(toggleLeftBar());
     }
   };
 
@@ -240,8 +245,12 @@ export const AppLeftBar = () => {
       readonly: false,
     };
     dispatch(addPreThread(newPreThread));
+
     if (searchModal) {
       onCloseSearchModal();
+    }
+    if (opened) {
+      dispatch(toggleLeftBar());
     }
   };
 

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import AppInput from "../components/AppInput";
 import AppButton from "../components/AppButton";
+import DirectThreadName from "../components/Chat/DirectThreadName";
 
 import { RootState } from "../store";
 import { ChatEntry, Thread, ThreadType, ThreadDirect } from "../store/types";
@@ -17,7 +18,12 @@ import {
   sendAddChatEntryMessage,
   sendAddThreadMessage,
 } from "../lib/services/broadcast/messages";
-import DirectThreadName from "../components/Chat/DirectThreadName";
+
+import {
+  CHAT_HEADER_HEIGHT,
+  CHAT_FOOTER_HEIGHT,
+  APP_HEADER_HEIGHT,
+} from "../lib/ui";
 
 // TODO Proper validation
 const MAX_CHAT_MESSAGE_LENGTH = 500;
@@ -36,6 +42,12 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
   useEffect(() => {
     updateScroll();
   }, []);
+
+  useEffect(() => {
+    if (chatInputRef.current) {
+      chatInputRef.current.focus();
+    }
+  }, [activeThread]);
 
   const updateScroll = () => {
     if (!chatWrapperRef.current) return;
@@ -105,22 +117,34 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
 
   return (
     <div>
-      {activeThread.type === ThreadType.DIRECT_THREAD ? (
-        <DirectThreadName
-          currentUserId={currentUser.id}
-          thread={activeThread}
-        />
-      ) : (
-        <div>{activeThread.name}</div>
-      )}
-      <div>
-        {activeThread.messages.map((entry) => (
-          <div key={entry.id}>{renderMessage(entry)}</div>
-        ))}
+      <div style={{ height: CHAT_HEADER_HEIGHT }}>
+        {activeThread.type === ThreadType.DIRECT_THREAD ? (
+          <DirectThreadName
+            currentUserId={currentUser.id}
+            thread={activeThread}
+          />
+        ) : (
+          <div>{activeThread.name}</div>
+        )}
+      </div>
+
+      <div
+        style={{
+          height: `calc(100vh - ${
+            APP_HEADER_HEIGHT + CHAT_HEADER_HEIGHT + CHAT_FOOTER_HEIGHT
+          }px)`,
+        }}
+      >
+        <div>
+          {activeThread.messages.map((entry) => (
+            <div key={entry.id}>{renderMessage(entry)}</div>
+          ))}
+        </div>
       </div>
       <div
-        className="flex"
+        className="flex items-center"
         onKeyDown={(e) => e.key === "Enter" && startEnteringMessage()}
+        style={{ height: CHAT_FOOTER_HEIGHT, backgroundColor: "tomato" }}
       >
         <AppInput
           ref={chatInputRef}

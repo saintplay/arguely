@@ -13,6 +13,7 @@ import { updateUser } from "../../store/server/actions";
 import { changeCurrentUser } from "../../store/user/actions";
 
 import { sendAddOrUpdateUserMessage } from "../../lib/services/broadcast/messages";
+import { APP_HEADER_HEIGHT } from "../../lib/ui";
 
 // TODO Proper validation
 const MAX_NICKNAME_LENGTH = 64;
@@ -55,7 +56,10 @@ function AppTopBar({
   };
 
   return (
-    <AppTopBarWrapper className="flex">
+    <AppTopBarWrapper
+      className="flex items-center"
+      style={{ height: APP_HEADER_HEIGHT }}
+    >
       <div
         className="select-none cursor-pointer px-2"
         onClick={onToggleLeftBar}
