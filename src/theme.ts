@@ -22,7 +22,8 @@ export type Theme = {
     border1: string;
     border2: string;
     inputbackground: string;
-    inputborder: string;
+    inputborder1: string;
+    inputborder2: string;
   };
 };
 
@@ -40,7 +41,8 @@ export const DISCORD_THEME: Theme = {
     border1: "rgb(102, 102, 102)",
     border2: "rgb(64, 64, 64)",
     inputbackground: "rgb(64, 68, 75)",
-    inputborder: "rgb(64, 68, 75)",
+    inputborder1: "rgb(64, 68, 75)",
+    inputborder2: "rgb(64, 68, 75)",
   },
 };
 
@@ -58,7 +60,8 @@ export const SLACK_THEME: Theme = {
     border1: "rgb(221, 221, 221)",
     border2: "rgb(82,38,83)",
     inputbackground: "#ffffff",
-    inputborder: "rgb(29, 28, 29)",
+    inputborder1: "rgb(29, 28, 29)",
+    inputborder2: "rgb(134, 134, 134)",
   },
 };
 
@@ -66,7 +69,7 @@ export const APP_THEMES = {
   DISCORD: "DISCORD",
   SLACK: "SLACK",
 };
-export const DEFAULT_THEME = APP_THEMES.DISCORD;
+export const DEFAULT_THEME = APP_THEMES.SLACK;
 
 export const ThemeProvider = _ThemeProvider;
 export default styled;

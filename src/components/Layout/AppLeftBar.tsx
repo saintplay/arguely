@@ -374,6 +374,7 @@ export const AppLeftBar = () => {
               <AppInput
                 ref={searchInputRef}
                 value={searchText}
+                borderAlternative
                 placeholder="Search for users and groups"
                 onChange={(e) => onChangeSearchText(e.target.value)}
               />
@@ -386,9 +387,9 @@ export const AppLeftBar = () => {
 
       <AppModal
         isOpen={createGroupModal}
+        className="rounded-md"
         onBackgroundClick={() => onCloseCreateGroupModal()}
         onEscapeKeydown={() => onCloseCreateGroupModal()}
-        className="rounded-md"
       >
         <div className="px-3 py-2">
           <TextAccent1Container className="font-bold text-lg">
@@ -405,14 +406,18 @@ export const AppLeftBar = () => {
           </TextDimmed1Container>
           <AppInput
             value={newGroupName}
+            borderAlternative
             placeholder="Enter a name"
             onChange={(e) => setNewGroupName(e.target.value)}
           />
+
+          {renderSeparator()}
+
           <div className="flex justify-end py-3">
             <AppButton onClick={() => onCloseCreateGroupModal()}>
-              Cancelar
+              Cancel
             </AppButton>
-            <AppButton onClick={() => onCreateThreadGroup()}>Guardar</AppButton>
+            <AppButton onClick={() => onCreateThreadGroup()}>Save</AppButton>
           </div>
         </div>
       </AppModal>

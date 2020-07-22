@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import PropTypes, { InferProps } from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
+import styled, { APP_THEMES } from "../../theme";
+
 import AppModal from "../AppModal";
 import AppInput from "../AppInput";
 import AppButton from "../AppButton";
-
-import styled, { APP_THEMES } from "../../theme";
+import AppHr from "../AppHr";
+import TextAccent1Container from "../StyledContainer/TextAccent1Container";
+import TextDimmed1Container from "../StyledContainer/TextDimmed1Container";
 
 import { RootState } from "../../store";
 import { updateUser } from "../../store/server/actions";
@@ -55,6 +58,14 @@ function AppTopBar({
     onCloseSettingsModal();
   };
 
+  const renderSeparator = (alternative?: boolean) => {
+    return (
+      <div className="py-4">
+        <AppHr alternative={alternative} className="border-t-semi" />
+      </div>
+    );
+  };
+
   return (
     <AppTopBarWrapper
       className="flex items-center"
@@ -70,29 +81,49 @@ function AppTopBar({
 
       <AppModal
         isOpen={settingsModal}
+        className="rounded-md"
         onBackgroundClick={() => onCloseSettingsModal()}
         onEscapeKeydown={() => onCloseSettingsModal()}
       >
-        <div className="flex">
+        <div className="px-3 py-2">
+          <TextAccent1Container className="font-bold text-lg">
+            Settings
+          </TextAccent1Container>
+
+          {renderSeparator()}
+
+          <TextDimmed1Container className="text-sm pb-1">
+            Nickname
+          </TextDimmed1Container>
           <AppInput
             value={dirtyNickname}
+            borderAlternative
+            placeholder="Enter a nickname"
             onChange={(e) => setDirtyNickname(e.target.value)}
           />
-          <AppButton onClick={() => onCloseSettingsModal()}>Close me</AppButton>
+
+          {renderSeparator()}
+
+          <div
+            className="select-none cursor-pointer px-2"
+            onClick={() => onChangeTheme(APP_THEMES.DISCORD)}
+          >
+            Change to Discord Theme
+          </div>
+          <div
+            className="select-none cursor-pointer px-2"
+            onClick={() => onChangeTheme(APP_THEMES.SLACK)}
+          >
+            Change to Discord Slack
+          </div>
+
+          {renderSeparator()}
+
+          <div className="flex justify-end py-3">
+            <AppButton onClick={() => onCloseSettingsModal()}>Cancel</AppButton>
+            <AppButton onClick={() => onSaveDirtyNickname()}>Save</AppButton>
+          </div>
         </div>
-        <div
-          className="select-none cursor-pointer px-2"
-          onClick={() => onChangeTheme(APP_THEMES.DISCORD)}
-        >
-          Discord
-        </div>
-        <div
-          className="select-none cursor-pointer px-2"
-          onClick={() => onChangeTheme(APP_THEMES.SLACK)}
-        >
-          Slack
-        </div>
-        <AppButton onClick={() => onSaveDirtyNickname()}>Guardar</AppButton>
       </AppModal>
     </AppTopBarWrapper>
   );
