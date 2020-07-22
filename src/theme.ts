@@ -66,7 +66,7 @@ export const APP_THEMES = {
   DISCORD: "DISCORD",
   SLACK: "SLACK",
 };
-export const DEFAULT_THEME = APP_THEMES.SLACK;
+export const DEFAULT_THEME = APP_THEMES.DISCORD;
 
 export const ThemeProvider = _ThemeProvider;
 export default styled;

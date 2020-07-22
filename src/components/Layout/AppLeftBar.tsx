@@ -33,7 +33,9 @@ import AppInput from "../AppInput";
 import AppHr from "../AppHr";
 import DirectThreadName from "../Chat/DirectThreadName";
 import UnseenNotication from "../Chat/UnseenNotification";
+import TextAccent1Container from "../StyledContainer/TextAccent1Container";
 import TextAccent2Container from "../StyledContainer/TextAccent2Container";
+import TextDimmed1Container from "../StyledContainer/TextDimmed1Container";
 
 const SEARCH_DELAY_MILLISECONDS = 150;
 
@@ -56,7 +58,7 @@ export const AppLeftBar = () => {
   const users = useSelector((state: RootState) => state.server.users);
   const threadsByCategory = useSelector(threadsByCategorySelector);
 
-  const [searchModal, setSearchModal] = useState(true);
+  const [searchModal, setSearchModal] = useState(false);
   const [createGroupModal, setCreateGroupModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchText, setSearchText] = useState("");
@@ -386,18 +388,33 @@ export const AppLeftBar = () => {
         isOpen={createGroupModal}
         onBackgroundClick={() => onCloseCreateGroupModal()}
         onEscapeKeydown={() => onCloseCreateGroupModal()}
+        className="rounded-md"
       >
-        <div className="flex">
+        <div className="px-3 py-2">
+          <TextAccent1Container className="font-bold text-lg">
+            Create Group Chat
+          </TextAccent1Container>
+          <TextDimmed1Container className="italic text-xs">
+            in {selectedCategory}
+          </TextDimmed1Container>
+
+          {renderSeparator()}
+
+          <TextDimmed1Container className="text-sm pb-1">
+            Chat Name
+          </TextDimmed1Container>
           <AppInput
             value={newGroupName}
+            placeholder="Enter a name"
             onChange={(e) => setNewGroupName(e.target.value)}
           />
-          <AppButton onClick={() => onCloseCreateGroupModal()}>
-            Close me
-          </AppButton>
+          <div className="flex justify-end py-3">
+            <AppButton onClick={() => onCloseCreateGroupModal()}>
+              Cancelar
+            </AppButton>
+            <AppButton onClick={() => onCreateThreadGroup()}>Guardar</AppButton>
+          </div>
         </div>
-        <div>{selectedCategory}</div>
-        <AppButton onClick={() => onCreateThreadGroup()}>Guardar</AppButton>
       </AppModal>
     </AppLeftBarWrapper>
   );
