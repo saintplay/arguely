@@ -43,7 +43,7 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
 
   useEffect(() => {
     updateScroll();
-  }, []);
+  }, [activeThread.messages.length]);
 
   useEffect(() => {
     if (!opened && chatInputRef.current) {
@@ -52,8 +52,10 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
   }, [activeThread, opened]);
 
   const updateScroll = () => {
-    if (!chatWrapperRef.current) return;
-    chatWrapperRef.current.scrollTop = chatWrapperRef.current.scrollHeight;
+    if (chatWrapperRef.current) {
+      console.log(chatWrapperRef.current.scrollHeight);
+      chatWrapperRef.current.scrollTop = chatWrapperRef.current.scrollHeight;
+    }
   };
 
   const startEnteringMessage = () => {
@@ -116,11 +118,13 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
       </div>
 
       <div
+        ref={chatWrapperRef}
         style={{
           height: `calc(100vh - ${
             APP_HEADER_HEIGHT + CHAT_HEADER_HEIGHT + CHAT_FOOTER_HEIGHT
           }px)`,
         }}
+        className="px-3 overflow-y-scroll"
       >
         <div>
           {activeThread.messages.map((entry) => (
