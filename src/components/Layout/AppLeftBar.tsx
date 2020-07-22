@@ -206,14 +206,6 @@ export const AppLeftBar = () => {
           logType: ChatLogType.CHAT_CREATED,
           timestamp: Date.now(),
         },
-        {
-          id: 2,
-          logType: ChatLogType.USER_JOINED,
-          timestamp: Date.now(),
-          payload: {
-            user: currentUser,
-          },
-        },
       ],
       unseenMessages: 0,
       readonly: false,

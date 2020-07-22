@@ -18,6 +18,7 @@ export type Theme = {
     textaccent1: string;
     text2: string;
     textaccent2: string;
+    border1: string;
   };
 };
 
@@ -31,6 +32,7 @@ export const DISCORD_THEME: Theme = {
     textaccent1: "#ffffff",
     text2: "#dcddde",
     textaccent2: "#ffffff",
+    border1: "rgb(102, 102, 102)",
   },
 };
 
@@ -44,26 +46,13 @@ export const SLACK_THEME: Theme = {
     textaccent1: "rgb(29, 28, 29)",
     text2: "rgb(207, 195, 207)",
     textaccent2: "#ffffff",
-  },
-};
-
-export const SKYPE_THEME: Theme = {
-  colors: {
-    content1: "#4f545c",
-    content2: "#36393f",
-    content3: "#2f3136",
-    content4: "#202225",
-    text1: "#dcddde",
-    textaccent1: "#ffffff",
-    text2: "#dcddde",
-    textaccent2: "#ffffff",
+    border1: "rgb(221, 221, 221)",
   },
 };
 
 export const APP_THEMES = {
   DISCORD: "DISCORD",
   SLACK: "SLACK",
-  SKYPE: "SKYPE",
 };
 export const DEFAULT_THEME = APP_THEMES.DISCORD;
 

@@ -25,10 +25,10 @@ import {
   APP_HEADER_HEIGHT,
 } from "../lib/ui";
 import ChatMessageEntry from "../components/Chat/ChatMessageEntry";
-import { number } from "prop-types";
 
 // TODO Proper validation
 const MAX_CHAT_MESSAGE_LENGTH = 500;
+
 const MAX_TIMESTAMP_DIFFERENCE = 10 * 60 * 1000;
 
 interface ActiveChatProps {

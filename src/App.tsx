@@ -8,7 +8,6 @@ import styled, {
   APP_THEMES,
   DISCORD_THEME,
   SLACK_THEME,
-  SKYPE_THEME,
 } from "./theme";
 
 import { RootState } from "./store";
@@ -50,8 +49,6 @@ function App() {
 
   const theme = useMemo(() => {
     switch (themeName) {
-      case APP_THEMES.SKYPE:
-        return SKYPE_THEME;
       case APP_THEMES.SLACK:
         return SLACK_THEME;
       case APP_THEMES.DISCORD:

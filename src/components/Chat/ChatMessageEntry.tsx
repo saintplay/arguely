@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react";
+import classNames from "classnames";
 
 import {
   ChatEntry,
@@ -6,7 +7,11 @@ import {
   ChatLog,
   ChatLogType,
 } from "../../store/types";
+
 import AppButton from "../AppButton";
+import AppHr from "../AppHr";
+import MainContentWrapper from "../MainContentWrapper";
+
 import { timestampToReadableStr } from "../../lib/utils";
 
 const USER_AVATAR_SIZE = 32;
@@ -26,7 +31,7 @@ const ChatMessageEntry: FunctionComponent<ChatMessageEntryProps> = ({
   onDeleteEntry = () => null,
 }) => {
   const renderChatMessage = (chatEntry: ChatMessage) => (
-    <div className="flex justify-between">
+    <div className={classNames("flex justify-between", { "pt-3": showHeader })}>
       {showHeader ? (
         <div
           style={{
@@ -93,15 +98,15 @@ const ChatMessageEntry: FunctionComponent<ChatMessageEntryProps> = ({
   };
 
   const renderLogMessage = () => (
-    <div>
-      <div className="flex justify-center">
-        {/* <div className={classNames("text-xs text-center opacity-75")}> */}
-        <div>
-          <div className="text-green">
+    <div className="relative flex items-center my-3" style={{ height: 40 }}>
+      <AppHr className="flex-grow border border-semi" />
+      <div className="absolute inset-0 flex justify-center">
+        <MainContentWrapper className="text-center px-3">
+          <div className="text-xs">
             {timestampToReadableStr(entry.timestamp)}
           </div>
-          <div className="text-white">{messageLogToStr(entry as ChatLog)}</div>
-        </div>
+          <div className="text-sm">{messageLogToStr(entry as ChatLog)}</div>
+        </MainContentWrapper>
       </div>
     </div>
   );
