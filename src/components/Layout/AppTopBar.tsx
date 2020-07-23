@@ -244,7 +244,7 @@ function AppTopBar({
           borderAlternative
           transparent
           readOnly
-          placeholder="Search Grous and Chats"
+          placeholder="Search grous and chats"
         />
       </div>
 

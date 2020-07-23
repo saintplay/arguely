@@ -31,6 +31,6 @@ export const timestampToReadableStr = (timestamp: number) => {
 
   if (isToday(timestamp)) return format(timestamp, "hh:mm a");
   if (isThisWeek(timestamp)) return format(timestamp, "dddd hh:mm a");
-  if (isThisYear(timestamp)) return format(timestamp, "mmm dd hh:mm a");
-  return format(timestamp, "dd/mm/yyyy hh:mm a");
+  if (isThisYear(timestamp)) return format(timestamp, "MMM dd hh:mm a");
+  return format(timestamp, "dd/MM/yyyy hh:mm a");
 };

@@ -37,7 +37,6 @@ import TextAccent1Container from "../StyledContainer/TextAccent1Container";
 import TextAccent2Container from "../StyledContainer/TextAccent2Container";
 import TextDimmed1Container from "../StyledContainer/TextDimmed1Container";
 import { changeCurrentUser } from "../../store/user/actions";
-import AppAvatar from "../AppAvatar";
 
 // TODO Proper validation
 const MAX_GROUP_NAME_LENGTH = 64;

@@ -26,7 +26,7 @@ export const getThreadMock = (): Thread => ({
     {
       id: 4,
       logType: ChatLogType.CHAT_CREATED,
-      timestamp: 1514868102000,
+      timestamp: 1546404102000,
     },
     {
       id: 6,
@@ -36,8 +36,8 @@ export const getThreadMock = (): Thread => ({
         nickname: "User 3",
         color: "plum",
       },
-      message: "Hola",
-      timestamp: 1515040902000,
+      message: "Hello",
+      timestamp: 1546576902000,
     },
     {
       id: 10,
@@ -47,13 +47,13 @@ export const getThreadMock = (): Thread => ({
         nickname: "User 3",
         color: "plum",
       },
-      message: "Hola, este es un mensaje de prueba",
-      timestamp: 1562621479668,
+      message: "Hi, this is a test message",
+      timestamp: 1594157479668,
     },
     {
       id: 14,
       logType: ChatLogType.USER_JOINED,
-      timestamp: 1514868102000,
+      timestamp: 1594157470668,
       payload: {
         user: {
           id: 2,
@@ -70,8 +70,8 @@ export const getThreadMock = (): Thread => ({
         nickname: "User 2",
         color: "brown",
       },
-      message: "Hola como estas",
-      timestamp: 1562621480668,
+      message: "I know",
+      timestamp: 1594157480668,
     },
     {
       id: 30,
@@ -81,13 +81,13 @@ export const getThreadMock = (): Thread => ({
         nickname: "User 2",
         color: "brown",
       },
-      message: "jugamos?",
-      timestamp: 1562621490668,
+      message: "this is a test chat",
+      timestamp: 1594157490668,
     },
     {
       id: 36,
       logType: ChatLogType.USER_JOINED,
-      timestamp: 1514868102000,
+      timestamp: 1594157490668,
       payload: {
         user: {
           id: 1,
@@ -104,8 +104,8 @@ export const getThreadMock = (): Thread => ({
         nickname: "User 1",
         color: "green",
       },
-      message: "Hola de nuevo",
-      timestamp: 1562621500668,
+      message: "Hi again",
+      timestamp: 1594157500668,
     },
     {
       id: 50,
@@ -115,8 +115,8 @@ export const getThreadMock = (): Thread => ({
         nickname: "User 5",
         color: "indigo",
       },
-      message: "acabo de actualizar, se demoró varias horas, que pesado",
-      timestamp: 1562621600668,
+      message: "Let's play something",
+      timestamp: 1594157600668,
     },
     {
       id: 53,
@@ -126,8 +126,8 @@ export const getThreadMock = (): Thread => ({
         nickname: "User 1",
         color: "green",
       },
-      message: "y nada más",
-      timestamp: 1562621600669,
+      message: "Let's do it!",
+      timestamp: 1594157600669,
     },
     {
       id: 54,
@@ -137,8 +137,8 @@ export const getThreadMock = (): Thread => ({
         nickname: "User 2",
         color: "brown",
       },
-      message: "aparte ya",
-      timestamp: 1562621600670,
+      message: "testing, testing...",
+      timestamp: 1594157600670,
     },
     {
       id: 60,
@@ -148,8 +148,8 @@ export const getThreadMock = (): Thread => ({
         nickname: "User 2",
         color: "brown",
       },
-      message: "probando, probando",
-      timestamp: 1562621700668,
+      message: "again",
+      timestamp: 1594157700668,
     },
     {
       id: 70,
@@ -159,8 +159,8 @@ export const getThreadMock = (): Thread => ({
         nickname: "User 3",
         color: "blue",
       },
-      message: "yo tambien",
-      timestamp: 1562721702367,
+      message: "I wish I had time to add better fonts",
+      timestamp: 1594257702367,
     },
   ],
   unseenMessages: 0,
@@ -168,8 +168,6 @@ export const getThreadMock = (): Thread => ({
 });
 
 export const getThreadsMock = (): Thread[] => [
-  // { ...getThreadMock(), id: 1, name: "Chat 1" },
-  // { ...getThreadMock(), id: 2, name: "Chat 2" },
   {
     ...getThreadMock(),
     id: DEFAULT_THREAD_ID_TO_GO,
@@ -196,9 +194,10 @@ export const getThreadsMock = (): Thread[] => [
   {
     ...getThreadMock(),
     id: 5,
-    name: "Chat 5",
+    name: "Readonly",
     type: ThreadType.GROUP_THREAD,
     category: "Off-topic",
+    readonly: true,
   },
 ];
 

@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import PropTypes, { InferProps } from "prop-types";
 
-import styled, { APP_THEMES } from "../theme";
+import { APP_THEMES } from "../theme";
 import { RootState } from "../store";
 
 import { USER_AVATAR_SIZE } from "../lib/ui";
