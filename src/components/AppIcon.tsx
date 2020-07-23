@@ -8,6 +8,7 @@ import { ReactComponent as HashtagIcon } from "../icons/hashtag.svg";
 import { ReactComponent as MoreIcon } from "../icons/more.svg";
 import { ReactComponent as SearchIcon } from "../icons/search.svg";
 import { ReactComponent as SendIcon } from "../icons/send.svg";
+import { ReactComponent as SettingIcon } from "../icons/setting.svg";
 import { ReactComponent as SidebarIcon } from "../icons/sidebar.svg";
 import { ReactComponent as TrashIcon } from "../icons/trash.svg";
 
@@ -49,6 +50,13 @@ const getInnerIcon = (children: string) => {
       `;
     case "send":
       return styled(SendIcon)`
+        fill: ${(props) =>
+          props.fill
+            ? (props.theme.colors as StringMap)[props.fill]
+            : props.theme.colors.text1};
+      `;
+    case "setting":
+      return styled(SettingIcon)`
         fill: ${(props) =>
           props.fill
             ? (props.theme.colors as StringMap)[props.fill]

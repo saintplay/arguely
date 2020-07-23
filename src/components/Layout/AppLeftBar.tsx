@@ -185,9 +185,16 @@ export const AppLeftBar = () => {
       )}
       <div className="relative flex flex-col z-20" style={{ width: 240 }}>
         <div className="flex-grow px-3 py-2">
-          <div onClick={() => onOpenSettingsModal()}>
-            {currentUser.nickname}
+          <div
+            className="flex justify-between items-center"
+            onClick={() => onOpenSettingsModal()}
+          >
+            <div>{currentUser.nickname}</div>
+            <AppIcon fill="text2">setting</AppIcon>
           </div>
+
+          {renderSeparator(true)}
+
           {threadsByCategory.map((groupByCategory) => (
             <div key={groupByCategory.category}>
               <TextAccent2Container
@@ -307,7 +314,13 @@ export const AppLeftBar = () => {
           {renderSeparator()}
 
           <div className="flex justify-end py-3">
-            <AppButton onClick={() => onCloseSettingsModal()}>Cancel</AppButton>
+            <div
+              className="select-none cursor-pointer px-3 py-2"
+              onClick={() => onCloseSettingsModal()}
+            >
+              Cancel
+            </div>
+            <div className="px-1">&nbsp;</div>
             <AppButton onClick={() => onSaveDirtyNickname()}>Save</AppButton>
           </div>
         </div>
@@ -342,9 +355,13 @@ export const AppLeftBar = () => {
           {renderSeparator()}
 
           <div className="flex justify-end py-3">
-            <AppButton onClick={() => onCloseCreateGroupModal()}>
+            <div
+              className="select-none cursor-pointer px-3 py-2"
+              onClick={() => onCloseCreateGroupModal()}
+            >
               Cancel
-            </AppButton>
+            </div>
+            <div className="px-1">&nbsp;</div>
             <AppButton onClick={() => onCreateThreadGroup()}>Save</AppButton>
           </div>
         </div>

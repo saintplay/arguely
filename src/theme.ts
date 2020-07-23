@@ -21,6 +21,8 @@ export type Theme = {
     textaccent2: string;
     border1: string;
     border2: string;
+    buttonbackground: string;
+    buttoncolor: string;
     inputbackground: string;
     inputborder1: string;
     inputborder2: string;
@@ -43,6 +45,8 @@ export const DISCORD_THEME: Theme = {
     textaccent2: "#ffffff",
     border1: "rgb(102, 102, 102)",
     border2: "rgb(64, 64, 64)",
+    buttonbackground: "#7289da",
+    buttoncolor: "#ffffff",
     inputbackground: "rgb(64, 68, 75)",
     inputborder1: "rgb(64, 68, 75)",
     inputborder2: "rgb(64, 68, 75)",
@@ -65,6 +69,8 @@ export const SLACK_THEME: Theme = {
     textaccent2: "#ffffff",
     border1: "rgb(221, 221, 221)",
     border2: "rgb(82,38,83)",
+    buttonbackground: "rgb(221, 221, 221)",
+    buttoncolor: "rgba(29, 28, 29, 0.75)",
     inputbackground: "#ffffff",
     inputborder1: "rgb(29, 28, 29)",
     inputborder2: "rgb(134, 134, 134)",
