@@ -8,10 +8,9 @@ import styled, { LEFT_BAR_BREAKPOINT } from "../../theme";
 
 import AppModal from "../AppModal";
 import AppInput from "../AppInput";
-import AppButton from "../AppButton";
 import AppHr from "../AppHr";
 import UnseenNotification from "../Chat/UnseenNotification";
-import TextAccent2Container from "../StyledContainer/TextAccent2Container";
+import TextAccent1Container from "../StyledContainer/TextAccent1Container";
 
 import { RootState } from "../../store";
 import { changeActiveThread, addPreThread } from "../../store/server/actions";
@@ -170,9 +169,9 @@ function AppTopBar({
         {actualReturn.threads.map((actualThreads) => (
           <div key={actualThreads.category}>
             {renderSeparator()}
-            <TextAccent2Container className="font-bold opacity-90">
+            <TextAccent1Container className="font-bold opacity-90">
               {actualThreads.category}
-            </TextAccent2Container>
+            </TextAccent1Container>
             {actualThreads.threads.map((thread) => (
               <div
                 key={thread.id}
@@ -191,9 +190,9 @@ function AppTopBar({
         {(actualReturn.users.length || null) && (
           <div>
             {renderSeparator()}
-            <TextAccent2Container className="font-bold opacity-90">
+            <TextAccent1Container className="font-bold opacity-90">
               Users
-            </TextAccent2Container>
+            </TextAccent1Container>
             {actualReturn.users.map(
               (user) =>
                 currentUser.id !== user.id && (
@@ -264,10 +263,22 @@ function AppTopBar({
                 value={searchText}
                 borderAlternative
                 placeholder="Search for users and groups"
+                before={
+                  <div className="pr-3">
+                    <AppIcon>search</AppIcon>
+                  </div>
+                }
+                after={
+                  <div
+                    className="cursor-pointer pl-3"
+                    onClick={() => onCloseSearchModal()}
+                  >
+                    <AppIcon size={IconSize.sm}>close</AppIcon>
+                  </div>
+                }
                 onChange={(e) => onChangeSearchText(e.target.value)}
               />
             </div>
-            <AppButton onClick={() => onCloseSearchModal()}>c</AppButton>
           </div>
           <div className="px-4 pb-4">{renderSearchResults()}</div>
         </div>
