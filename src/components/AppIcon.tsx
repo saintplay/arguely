@@ -9,6 +9,7 @@ import { ReactComponent as MoreIcon } from "../icons/more.svg";
 import { ReactComponent as SearchIcon } from "../icons/search.svg";
 import { ReactComponent as SendIcon } from "../icons/send.svg";
 import { ReactComponent as SidebarIcon } from "../icons/sidebar.svg";
+import { ReactComponent as TrashIcon } from "../icons/trash.svg";
 
 import { IconSize } from "../lib/types";
 
@@ -54,8 +55,15 @@ const getInnerIcon = (children: string) => {
             : props.theme.colors.text1};
       `;
     case "sidebar":
-    default:
       return styled(SidebarIcon)`
+        fill: ${(props) =>
+          props.fill
+            ? (props.theme.colors as StringMap)[props.fill]
+            : props.theme.colors.text1};
+      `;
+    case "trash":
+    default:
+      return styled(TrashIcon)`
         fill: ${(props) =>
           props.fill
             ? (props.theme.colors as StringMap)[props.fill]

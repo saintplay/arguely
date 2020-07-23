@@ -15,6 +15,7 @@ import TextDimmed1Container from "../StyledContainer/TextDimmed1Container";
 import TextAccent1Container from "../StyledContainer/TextAccent1Container";
 
 import { timestampToReadableStr } from "../../lib/utils";
+import AppIcon from "../AppIcon";
 
 const USER_AVATAR_SIZE = 32;
 
@@ -80,7 +81,9 @@ const ChatMessageEntry: FunctionComponent<ChatMessageEntryProps> = ({
       </div>
       <div>
         {isOwnMessage && (
-          <AppButton onClick={() => onDeleteEntry(entry)}>E</AppButton>
+          <div className="cursor-pointer" onClick={() => onDeleteEntry(entry)}>
+            <AppIcon fill="textdimmed1">trash</AppIcon>
+          </div>
         )}
       </div>
     </div>
