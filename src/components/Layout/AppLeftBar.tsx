@@ -37,6 +37,7 @@ import TextAccent1Container from "../StyledContainer/TextAccent1Container";
 import TextAccent2Container from "../StyledContainer/TextAccent2Container";
 import TextDimmed1Container from "../StyledContainer/TextDimmed1Container";
 import { changeCurrentUser } from "../../store/user/actions";
+import AppAvatar from "../AppAvatar";
 
 // TODO Proper validation
 const MAX_GROUP_NAME_LENGTH = 64;
@@ -186,10 +187,15 @@ export const AppLeftBar = () => {
       <div className="relative flex flex-col z-20" style={{ width: 240 }}>
         <div className="flex-grow px-3 py-2">
           <div
-            className="flex justify-between items-center"
+            className="flex justify-between items-center select-none cursor-pointer"
             onClick={() => onOpenSettingsModal()}
           >
-            <div>{currentUser.nickname}</div>
+            <div>
+              <TextAccent2Container className="font-bold">
+                My User
+              </TextAccent2Container>
+              <div>{currentUser.nickname}</div>
+            </div>
             <AppIcon fill="text2">setting</AppIcon>
           </div>
 

@@ -8,16 +8,15 @@ import {
   ChatLogType,
 } from "../../store/types";
 
-import AppButton from "../AppButton";
 import AppHr from "../AppHr";
+import AppAvatar from "../AppAvatar";
+import AppIcon from "../AppIcon";
 import MainContentWrapper from "../StyledContainer/MainContentWrapper";
 import TextDimmed1Container from "../StyledContainer/TextDimmed1Container";
 import TextAccent1Container from "../StyledContainer/TextAccent1Container";
 
 import { timestampToReadableStr } from "../../lib/utils";
-import AppIcon from "../AppIcon";
-
-const USER_AVATAR_SIZE = 32;
+import { USER_AVATAR_SIZE } from "../../lib/ui";
 
 interface ChatMessageEntryProps {
   entry: ChatEntry;
@@ -36,22 +35,8 @@ const ChatMessageEntry: FunctionComponent<ChatMessageEntryProps> = ({
   const renderChatMessage = (chatEntry: ChatMessage) => (
     <div className={classNames("flex justify-between", { "pt-3": showHeader })}>
       {showHeader ? (
-        <div
-          style={{
-            width: USER_AVATAR_SIZE,
-            minWidth: USER_AVATAR_SIZE,
-            height: USER_AVATAR_SIZE,
-          }}
-          onClick={() => onClickUser(entry.id)}
-        >
-          {/* <img
-              className="rounded-circle mr-2"
-              src={entry.data.avatar}
-              width={`${USER_AVATAR_SIZE}px`}
-              style={{ minWidth: USER_AVATAR_SIZE }}
-              alt={entry.data.nickname}
-            /> */}
-          av
+        <div className="pt-1" onClick={() => onClickUser(entry.id)}>
+          <AppAvatar color={chatEntry.user.color} />
         </div>
       ) : (
         <div
@@ -63,7 +48,7 @@ const ChatMessageEntry: FunctionComponent<ChatMessageEntryProps> = ({
           &nbsp;
         </div>
       )}
-      <div className="flex-grow">
+      <div className="flex-grow pl-2">
         {showHeader && (
           <div className="flex items-center">
             <TextAccent1Container
