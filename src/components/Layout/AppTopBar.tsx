@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import debounce from "lodash.debounce";
 import flatten from "lodash.flatten";
 
-import styled from "../../theme";
+import styled, { LEFT_BAR_BREAKPOINT } from "../../theme";
 
 import AppModal from "../AppModal";
 import AppInput from "../AppInput";
@@ -29,6 +29,8 @@ import {
   ThreadByCategory,
 } from "../../store/types";
 import { hideLeftBar } from "../../store/layout/actions";
+import AppIcon from "../AppIcon";
+import { IconSize } from "../../lib/types";
 
 const SEARCH_DELAY_MILLISECONDS = 150;
 
@@ -95,6 +97,7 @@ function AppTopBar({
   const onCloseSearchModal = () => {
     setSearchModal(false);
     setSearchText("");
+    onHideLeftBar();
   };
 
   const onThreadClick = (threadId: number) => {
@@ -219,17 +222,33 @@ function AppTopBar({
 
   return (
     <AppTopBarWrapper
-      className="flex justify-center items-center"
+      className="flex justify-between items-center"
       style={{ height: APP_HEADER_HEIGHT }}
     >
-      <div
-        className="select-none cursor-pointer px-2"
+      <ToggleSidebarWrapper
+        className="select-none cursor-pointer px-3"
         onClick={onToggleLeftBar}
       >
-        Toggle LeftBar
+        <AppIcon fill="text2" size={IconSize.lg}>
+          sidebar
+        </AppIcon>
+      </ToggleSidebarWrapper>
+
+      <div onClick={() => onOpenSearchModal()}>
+        <AppInput
+          before={
+            <div className="px-2">
+              <AppIcon fill="text2">search</AppIcon>
+            </div>
+          }
+          borderAlternative
+          transparent
+          readOnly
+          placeholder="Search Grous and Chats"
+        />
       </div>
 
-      <AppButton onClick={() => onOpenSearchModal()}>Search</AppButton>
+      <div>&nbsp;</div>
 
       <AppModal
         isOpen={searchModal}
@@ -268,6 +287,13 @@ AppTopBar.defaultProps = {
 const AppTopBarWrapper = styled.div`
   color: ${(props) => props.theme.colors.text2};
   background-color: ${(props) => props.theme.colors.content3};
+`;
+
+const ToggleSidebarWrapper = styled.div`
+  visibility: hidden;
+  @media (max-width: ${LEFT_BAR_BREAKPOINT}px) {
+    visibility: visible;
+  }
 `;
 
 export default AppTopBar;

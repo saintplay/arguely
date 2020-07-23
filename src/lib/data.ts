@@ -2,16 +2,16 @@ import { User, Thread, ThreadType, ChatLogType } from "../store/types";
 
 export const getUserMock = (): User => ({
   id: 1,
-  nickname: "Usuario de Prueba",
+  nickname: "Test User",
   color: "red",
 });
 
 export const getUsersMock = (): User[] => [
-  { ...getUserMock(), id: 1, nickname: "Usuario 1" },
-  { ...getUserMock(), id: 2, nickname: "Usuario 2" },
-  { ...getUserMock(), id: 3, nickname: "Usuario 3" },
-  { ...getUserMock(), id: 4, nickname: "Usuario 4" },
-  { ...getUserMock(), id: 5, nickname: "Usuario 5" },
+  { ...getUserMock(), id: 1, nickname: "User 1" },
+  { ...getUserMock(), id: 2, nickname: "User 2" },
+  { ...getUserMock(), id: 3, nickname: "User 3" },
+  { ...getUserMock(), id: 4, nickname: "User 4" },
+  { ...getUserMock(), id: 5, nickname: "User 5" },
 ];
 
 export const DEFAULT_THREAD_ID_TO_GO = 212;
@@ -19,7 +19,7 @@ export const DEFAULT_THREAD_ID_TO_GO = 212;
 export const getThreadMock = (): Thread => ({
   id: 1,
   type: ThreadType.DIRECT_THREAD,
-  name: "Chat Prueba",
+  name: "Test Chat",
   userId1: 1,
   userId2: 2,
   messages: [
