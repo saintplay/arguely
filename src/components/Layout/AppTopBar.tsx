@@ -9,7 +9,6 @@ import styled, { LEFT_BAR_BREAKPOINT } from "../../theme";
 import AppModal from "../AppModal";
 import AppInput from "../AppInput";
 import AppHr from "../AppHr";
-import UnseenNotification from "../Chat/UnseenNotification";
 import TextAccent1Container from "../StyledContainer/TextAccent1Container";
 
 import { RootState } from "../../store";

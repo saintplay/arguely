@@ -24,6 +24,7 @@ export type Theme = {
     inputbackground: string;
     inputborder1: string;
     inputborder2: string;
+    notification: string;
     accent: string;
     disabled: string;
   };
@@ -45,6 +46,7 @@ export const DISCORD_THEME: Theme = {
     inputbackground: "rgb(64, 68, 75)",
     inputborder1: "rgb(64, 68, 75)",
     inputborder2: "rgb(64, 68, 75)",
+    notification: "rgb(205, 37, 83)",
     accent: "#ffffff",
     disabled: "#dcddde",
   },
@@ -66,6 +68,7 @@ export const SLACK_THEME: Theme = {
     inputbackground: "#ffffff",
     inputborder1: "rgb(29, 28, 29)",
     inputborder2: "rgb(134, 134, 134)",
+    notification: "rgb(205, 37, 83)",
     accent: "#148567",
     disabled: "rgba(29, 28, 29, 0.7)",
   },

@@ -191,7 +191,7 @@ export const AppLeftBar = () => {
           {threadsByCategory.map((groupByCategory) => (
             <div key={groupByCategory.category}>
               <TextAccent2Container
-                className="font-bold flex justify-between opacity-90 cursor-pointer select-none"
+                className="font-bold flex justify-between opacity-90 cursor-pointer select-none pb-2"
                 onClick={() => onOpenCreateGroupModal(groupByCategory.category)}
               >
                 <div>{groupByCategory.category}</div>
@@ -207,7 +207,13 @@ export const AppLeftBar = () => {
                 >
                   <div className="flex items-center">
                     <AppIcon fill="text2">hashtag</AppIcon>
-                    <div className="pl-2">{thread.name}</div>
+                    {thread.unseenMessages ? (
+                      <TextAccent2Container className="font-bold pl-2">
+                        {thread.name}
+                      </TextAccent2Container>
+                    ) : (
+                      <div className="pl-2">{thread.name}</div>
+                    )}
                   </div>
                   <UnseenNotication unseenMessages={thread.unseenMessages} />
                 </div>
@@ -219,7 +225,7 @@ export const AppLeftBar = () => {
 
           {(directThreads.length || null) && (
             <>
-              <TextAccent2Container className="font-bold opacity-90">
+              <TextAccent2Container className="font-bold opacity-90 pb-2">
                 Private Messages
               </TextAccent2Container>
               {directThreads.map((thread) => (
@@ -242,7 +248,7 @@ export const AppLeftBar = () => {
             </>
           )}
 
-          <TextAccent2Container className="font-bold opacity-90">
+          <TextAccent2Container className="font-bold opacity-90 pb-2">
             Other Users
           </TextAccent2Container>
           {actualUsers.map(

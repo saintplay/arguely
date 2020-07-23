@@ -191,6 +191,7 @@ export const getThreadsMock = (): Thread[] => [
     name: "Chat 4",
     type: ThreadType.GROUP_THREAD,
     category: "Off-topic",
+    unseenMessages: 5,
   },
   {
     ...getThreadMock(),
