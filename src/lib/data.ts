@@ -34,7 +34,7 @@ export const getThreadMock = (): Thread => ({
       user: {
         id: 3,
         nickname: "User 3",
-        color: "purple",
+        color: "plum",
       },
       message: "Hola",
       timestamp: 1515040902000,
@@ -45,7 +45,7 @@ export const getThreadMock = (): Thread => ({
       user: {
         id: 3,
         nickname: "User 3",
-        color: "purple",
+        color: "plum",
       },
       message: "Hola, este es un mensaje de prueba",
       timestamp: 1562621479668,
@@ -157,7 +157,7 @@ export const getThreadMock = (): Thread => ({
       user: {
         id: 3,
         nickname: "User 3",
-        color: "purple",
+        color: "blue",
       },
       message: "yo tambien",
       timestamp: 1562721702367,
