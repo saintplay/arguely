@@ -1,18 +1,14 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import debounce from "lodash.debounce";
-import flatten from "lodash.flatten";
 
-import styled, { LEFT_BAR_BREAKPOINT } from "../../theme";
+import styled, { LEFT_BAR_BREAKPOINT, APP_THEMES } from "../../theme";
 
 import { RootState } from "../../store";
 import {
   ThreadType,
-  Thread,
   ThreadGroup,
   ThreadPreDirect,
   User,
-  ThreadByCategory,
   ChatLogType,
   ThreadDirect,
 } from "../../store/types";
@@ -20,12 +16,15 @@ import {
   addThread,
   changeActiveThread,
   addPreThread,
+  updateUser,
 } from "../../store/server/actions";
-import { hideLeftBar } from "../../store/layout/actions";
+import { hideLeftBar, changeTheme } from "../../store/layout/actions";
 import { threadsByCategorySelector } from "../../store/selectors";
 
-import { getThreadsByCategory } from "../../lib/utils";
-import { sendAddThreadMessage } from "../../lib/services/broadcast/messages";
+import {
+  sendAddThreadMessage,
+  sendAddOrUpdateUserMessage,
+} from "../../lib/services/broadcast/messages";
 
 import AppButton from "../AppButton";
 import AppModal from "../AppModal";
@@ -36,59 +35,25 @@ import UnseenNotication from "../Chat/UnseenNotification";
 import TextAccent1Container from "../StyledContainer/TextAccent1Container";
 import TextAccent2Container from "../StyledContainer/TextAccent2Container";
 import TextDimmed1Container from "../StyledContainer/TextDimmed1Container";
-
-const SEARCH_DELAY_MILLISECONDS = 150;
+import { changeCurrentUser } from "../../store/user/actions";
 
 // TODO Proper validation
 const MAX_GROUP_NAME_LENGTH = 64;
-
-const MIN_SEARCH_BOX_HEIGHT = 200;
-
-interface SearchResult {
-  threads: ThreadByCategory[];
-  users: User[];
-}
+const MAX_NICKNAME_LENGTH = 64;
 
 export const AppLeftBar = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const opened = useSelector((state: RootState) => state.layout.opened);
   const threads = useSelector((state: RootState) => state.server.threads);
-  const categories = useSelector((state: RootState) => state.server.categories);
   const users = useSelector((state: RootState) => state.server.users);
   const threadsByCategory = useSelector(threadsByCategorySelector);
 
-  const [searchModal, setSearchModal] = useState(false);
+  const [settingsModal, setSettingsModal] = useState(false);
   const [createGroupModal, setCreateGroupModal] = useState(false);
+  const [dirtyNickname, setDirtyNickname] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [searchText, setSearchText] = useState("");
   const [newGroupName, setNewGroupName] = useState("");
-
-  const [threadsFounded, setThreadsFounded] = useState<Thread[]>([]);
-  const [usersFounded, setUsersFounded] = useState<User[]>([]);
-  const [categoriesFounded, setCategoriesFounded] = useState<string[]>([]);
-
-  const searchInputRef = useRef<HTMLInputElement>(null);
-
-  // We focus asynchronusly because how node_modules/styled-react-modal works
-  useEffect(() => {
-    if (searchModal) {
-      const timeoutNumber = setTimeout(() => {
-        if (searchInputRef.current) {
-          searchInputRef.current.focus();
-        }
-      }, 50);
-      return () => clearInterval(timeoutNumber);
-    }
-  }, [searchModal]);
-
-  const delayedSearch = useCallback(
-    debounce(
-      (newText: string) => searchGlobally(newText),
-      SEARCH_DELAY_MILLISECONDS
-    ),
-    []
-  );
 
   const directThreads: ThreadDirect[] = threads.filter(
     (t): t is ThreadDirect => t.type === ThreadType.DIRECT_THREAD
@@ -103,21 +68,14 @@ export const AppLeftBar = () => {
       ) === -1
   );
 
-  const searchGlobally = (text: string) => {
-    const regex = new RegExp(text, "i");
-    setThreadsFounded(threads.filter((t) => regex.test(t.name)));
-    setUsersFounded(notMeUsers.filter((u) => regex.test(u.nickname)));
-    setCategoriesFounded(categories.filter((c) => regex.test(c)));
+  const onOpenSettingsModal = () => {
+    setDirtyNickname(currentUser.nickname);
+    setSettingsModal(true);
   };
 
-  const onOpenSearchModal = () => {
-    setSearchModal(true);
-  };
-
-  const onCloseSearchModal = () => {
-    setSearchModal(false);
-    setSearchText("");
-    onHideLeftBar();
+  const onCloseSettingsModal = () => {
+    setSettingsModal(false);
+    setDirtyNickname("");
   };
 
   const onOpenCreateGroupModal = (category: string) => {
@@ -131,9 +89,21 @@ export const AppLeftBar = () => {
     onHideLeftBar();
   };
 
-  const onChangeSearchText = (newText: string) => {
-    setSearchText(newText);
-    delayedSearch(newText.trim());
+  const onSaveDirtyNickname = () => {
+    const trimmedNickname = dirtyNickname.trim();
+
+    if (trimmedNickname === "") return;
+
+    const actualNickname = trimmedNickname.substring(0, MAX_NICKNAME_LENGTH);
+
+    if (actualNickname !== currentUser.nickname) {
+      const updatedUser = { ...currentUser, nickname: actualNickname };
+      dispatch(changeCurrentUser(updatedUser));
+      dispatch(updateUser(updatedUser));
+
+      sendAddOrUpdateUserMessage(updatedUser);
+    }
+    onCloseSettingsModal();
   };
 
   const onCreateThreadGroup = () => {
@@ -168,10 +138,6 @@ export const AppLeftBar = () => {
 
   const onThreadClick = (threadId: number) => {
     dispatch(changeActiveThread(threadId));
-
-    if (searchModal) {
-      onCloseSearchModal();
-    }
     onHideLeftBar();
   };
 
@@ -187,9 +153,6 @@ export const AppLeftBar = () => {
     };
     dispatch(addPreThread(newPreThread));
 
-    if (searchModal) {
-      onCloseSearchModal();
-    }
     onHideLeftBar();
   };
 
@@ -197,80 +160,8 @@ export const AppLeftBar = () => {
     dispatch(hideLeftBar());
   };
 
-  const renderSearchResults = () => {
-    const categoryThreads = flatten(
-      categoriesFounded.map((c) => {
-        const threadByCategory = threadsByCategory.find(
-          (a) => a.category === c
-        );
-        return threadByCategory ? threadByCategory.threads : [];
-      })
-    );
-
-    const actualThreadsFounded = [...categoryThreads, ...threadsFounded];
-    const groupThreads: ThreadGroup[] = actualThreadsFounded.filter(
-      (t): t is ThreadGroup => t.type === ThreadType.GROUP_THREAD
-    );
-    const actualReturn: SearchResult = searchText
-      ? {
-          threads: getThreadsByCategory(groupThreads, categories),
-          users: usersFounded,
-        }
-      : { threads: threadsByCategory, users: [] };
-
-    if (!actualReturn.threads.length && !actualReturn.users.length) {
-      return (
-        <div className="italic text-center tx-sm py-2 opacity-75">
-          No results
-        </div>
-      );
-    }
-
-    return (
-      <div>
-        {actualReturn.threads.map((actualThreads) => (
-          <div key={actualThreads.category}>
-            {renderSeparator()}
-            <TextAccent2Container className="font-bold opacity-90">
-              {actualThreads.category}
-            </TextAccent2Container>
-            {actualThreads.threads.map((thread) => (
-              <div
-                key={thread.id}
-                className="flex justify-between text-sm cursor-pointer select-none py-1"
-                onClick={() => onThreadClick(thread.id)}
-              >
-                <div className="flex">
-                  <div>{thread.name}</div>
-                  <UnseenNotication unseenMessages={thread.unseenMessages} />
-                </div>
-                <div className="italic text-xs">{thread.category}</div>
-              </div>
-            ))}
-          </div>
-        ))}
-        {(actualReturn.users.length || null) && (
-          <div>
-            {renderSeparator()}
-            <TextAccent2Container className="font-bold opacity-90">
-              Users
-            </TextAccent2Container>
-            {actualReturn.users.map(
-              (user) =>
-                currentUser.id !== user.id && (
-                  <div
-                    key={user.id}
-                    className="text-sm select-none cursor-pointer py-1"
-                    onClick={() => onUserPreThreadClick(user)}
-                  >
-                    {user.nickname}
-                  </div>
-                )
-            )}
-          </div>
-        )}
-      </div>
-    );
+  const onChangeTheme = (theme: string) => {
+    dispatch(changeTheme(theme));
   };
 
   const renderSeparator = (alternative?: boolean) => {
@@ -293,8 +184,9 @@ export const AppLeftBar = () => {
       )}
       <div className="relative flex flex-col z-20" style={{ width: 240 }}>
         <div className="flex-grow px-3 py-2">
-          <AppButton onClick={() => onOpenSearchModal()}>Search</AppButton>
-
+          <div onClick={() => onOpenSettingsModal()}>
+            {currentUser.nickname}
+          </div>
           {threadsByCategory.map((groupByCategory) => (
             <div key={groupByCategory.category}>
               <TextAccent2Container
@@ -363,25 +255,49 @@ export const AppLeftBar = () => {
       </div>
 
       <AppModal
-        isOpen={searchModal}
+        isOpen={settingsModal}
         className="rounded-md"
-        onBackgroundClick={() => onCloseSearchModal()}
-        onEscapeKeydown={() => onCloseSearchModal()}
+        onBackgroundClick={() => onCloseSettingsModal()}
+        onEscapeKeydown={() => onCloseSettingsModal()}
       >
-        <div style={{ minHeight: MIN_SEARCH_BOX_HEIGHT }}>
-          <div className="flex">
-            <div className="flex-grow">
-              <AppInput
-                ref={searchInputRef}
-                value={searchText}
-                borderAlternative
-                placeholder="Search for users and groups"
-                onChange={(e) => onChangeSearchText(e.target.value)}
-              />
-            </div>
-            <AppButton onClick={() => onCloseSearchModal()}>c</AppButton>
+        <div className="px-3 py-2">
+          <TextAccent1Container className="font-bold text-lg">
+            Settings
+          </TextAccent1Container>
+
+          {renderSeparator()}
+
+          <TextDimmed1Container className="text-sm pb-1">
+            Nickname
+          </TextDimmed1Container>
+          <AppInput
+            value={dirtyNickname}
+            borderAlternative
+            placeholder="Enter a nickname"
+            onChange={(e) => setDirtyNickname(e.target.value)}
+          />
+
+          {renderSeparator()}
+
+          <div
+            className="select-none cursor-pointer px-2"
+            onClick={() => onChangeTheme(APP_THEMES.DISCORD)}
+          >
+            Change to Discord Theme
           </div>
-          <div className="px-4 pb-4">{renderSearchResults()}</div>
+          <div
+            className="select-none cursor-pointer px-2"
+            onClick={() => onChangeTheme(APP_THEMES.SLACK)}
+          >
+            Change to Discord Slack
+          </div>
+
+          {renderSeparator()}
+
+          <div className="flex justify-end py-3">
+            <AppButton onClick={() => onCloseSettingsModal()}>Cancel</AppButton>
+            <AppButton onClick={() => onSaveDirtyNickname()}>Save</AppButton>
+          </div>
         </div>
       </AppModal>
 
