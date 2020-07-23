@@ -179,8 +179,10 @@ function AppTopBar({
                 onClick={() => onThreadClick(thread.id)}
               >
                 <div className="flex">
-                  <div>{thread.name}</div>
-                  <UnseenNotification unseenMessages={thread.unseenMessages} />
+                  <div className="flex items-center">
+                    <AppIcon fill="textdimmed1">hashtag</AppIcon>
+                    <div className="pl-2">{thread.name}</div>
+                  </div>
                 </div>
                 <div className="italic text-xs">{thread.category}</div>
               </div>

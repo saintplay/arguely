@@ -29,6 +29,7 @@ import {
 import AppButton from "../AppButton";
 import AppModal from "../AppModal";
 import AppInput from "../AppInput";
+import AppIcon from "../AppIcon";
 import AppHr from "../AppHr";
 import DirectThreadName from "../Chat/DirectThreadName";
 import UnseenNotication from "../Chat/UnseenNotification";
@@ -194,7 +195,9 @@ export const AppLeftBar = () => {
                 onClick={() => onOpenCreateGroupModal(groupByCategory.category)}
               >
                 <div>{groupByCategory.category}</div>
-                <div>A</div>
+                <div className="cursor-pointer">
+                  <AppIcon fill="textaccent2">more</AppIcon>
+                </div>
               </TextAccent2Container>
               {groupByCategory.threads.map((thread) => (
                 <div
@@ -202,7 +205,10 @@ export const AppLeftBar = () => {
                   className="flex justify-between text-sm cursor-pointer select-none py-1"
                   onClick={() => onThreadClick(thread.id)}
                 >
-                  <div>{thread.name}</div>
+                  <div className="flex items-center">
+                    <AppIcon fill="text2">hashtag</AppIcon>
+                    <div className="pl-2">{thread.name}</div>
+                  </div>
                   <UnseenNotication unseenMessages={thread.unseenMessages} />
                 </div>
               ))}
