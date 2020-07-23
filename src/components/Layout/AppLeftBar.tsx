@@ -48,9 +48,10 @@ export const AppLeftBar = () => {
   const opened = useSelector((state: RootState) => state.layout.opened);
   const threads = useSelector((state: RootState) => state.server.threads);
   const users = useSelector((state: RootState) => state.server.users);
+  const themeName = useSelector((state: RootState) => state.layout.theme);
   const threadsByCategory = useSelector(threadsByCategorySelector);
 
-  const [settingsModal, setSettingsModal] = useState(false);
+  const [settingsModal, setSettingsModal] = useState(true);
   const [createGroupModal, setCreateGroupModal] = useState(false);
   const [dirtyNickname, setDirtyNickname] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -153,16 +154,15 @@ export const AppLeftBar = () => {
       readonly: false,
     };
     dispatch(addPreThread(newPreThread));
-
     onHideLeftBar();
-  };
-
-  const onHideLeftBar = () => {
-    dispatch(hideLeftBar());
   };
 
   const onChangeTheme = (theme: string) => {
     dispatch(changeTheme(theme));
+  };
+
+  const onHideLeftBar = () => {
+    dispatch(hideLeftBar());
   };
 
   const renderSeparator = (alternative?: boolean) => {
@@ -303,18 +303,21 @@ export const AppLeftBar = () => {
 
           {renderSeparator()}
 
-          <div
-            className="select-none cursor-pointer px-2"
-            onClick={() => onChangeTheme(APP_THEMES.DISCORD)}
-          >
-            Change to Discord Theme
-          </div>
-          <div
-            className="select-none cursor-pointer px-2"
-            onClick={() => onChangeTheme(APP_THEMES.SLACK)}
-          >
-            Change to Discord Slack
-          </div>
+          {themeName === APP_THEMES.SLACK ? (
+            <TextDimmed1Container
+              className="italic text-sm select-none cursor-pointer px-2"
+              onClick={() => onChangeTheme(APP_THEMES.DISCORD)}
+            >
+              Change to Discord theme
+            </TextDimmed1Container>
+          ) : (
+            <TextDimmed1Container
+              className="italic text-sm select-none cursor-pointer px-2"
+              onClick={() => onChangeTheme(APP_THEMES.SLACK)}
+            >
+              Change to Slack theme
+            </TextDimmed1Container>
+          )}
 
           {renderSeparator()}
 
