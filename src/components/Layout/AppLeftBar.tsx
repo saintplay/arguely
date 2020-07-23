@@ -51,7 +51,7 @@ export const AppLeftBar = () => {
   const themeName = useSelector((state: RootState) => state.layout.theme);
   const threadsByCategory = useSelector(threadsByCategorySelector);
 
-  const [settingsModal, setSettingsModal] = useState(true);
+  const [settingsModal, setSettingsModal] = useState(false);
   const [createGroupModal, setCreateGroupModal] = useState(false);
   const [dirtyNickname, setDirtyNickname] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -284,7 +284,10 @@ export const AppLeftBar = () => {
         onBackgroundClick={() => onCloseSettingsModal()}
         onEscapeKeydown={() => onCloseSettingsModal()}
       >
-        <div className="px-3 py-2">
+        <div
+          className="px-3 py-2"
+          onKeyDown={(e) => e.key === "Enter" && onSaveDirtyNickname()}
+        >
           <TextAccent1Container className="font-bold text-lg">
             Settings
           </TextAccent1Container>
@@ -340,7 +343,10 @@ export const AppLeftBar = () => {
         onBackgroundClick={() => onCloseCreateGroupModal()}
         onEscapeKeydown={() => onCloseCreateGroupModal()}
       >
-        <div className="px-3 py-2">
+        <div
+          className="px-3 py-2"
+          onKeyDown={(e) => e.key === "Enter" && onCreateThreadGroup()}
+        >
           <TextAccent1Container className="font-bold text-lg">
             Create Group Chat
           </TextAccent1Container>

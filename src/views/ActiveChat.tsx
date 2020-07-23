@@ -7,6 +7,7 @@ import AppInput from "../components/AppInput";
 import DirectThreadName from "../components/Chat/DirectThreadName";
 import MainContentWrapper from "../components/StyledContainer/MainContentWrapper";
 import TextAccent1Container from "../components/StyledContainer/TextAccent1Container";
+import TextDimmed1Container from "../components/StyledContainer/TextDimmed1Container";
 import ChatMessageEntry from "../components/Chat/ChatMessageEntry";
 
 import { RootState } from "../store";
@@ -155,18 +156,24 @@ const ActiveChat: FunctionComponent<ActiveChatProps> = ({ activeThread }) => {
         className="px-3 overflow-y-scroll"
       >
         <div>
-          {activeThread.messages.map((entry, index) => (
-            <div key={entry.id}>
-              <ChatMessageEntry
-                entry={entry}
-                showHeader={shouldEntryHaveHeader(index)}
-                isOwnMessage={
-                  !entry.logType && entry.user.id === currentUser.id
-                }
-                onDeleteEntry={onDeleteEntry}
-              />
-            </div>
-          ))}
+          {activeThread.messages.length ? (
+            activeThread.messages.map((entry, index) => (
+              <div key={entry.id}>
+                <ChatMessageEntry
+                  entry={entry}
+                  showHeader={shouldEntryHaveHeader(index)}
+                  isOwnMessage={
+                    !entry.logType && entry.user.id === currentUser.id
+                  }
+                  onDeleteEntry={onDeleteEntry}
+                />
+              </div>
+            ))
+          ) : (
+            <TextDimmed1Container className="italic text-sm text-center pt-3">
+              Let's start chatting
+            </TextDimmed1Container>
+          )}
         </div>
       </div>
       <MainContentWrapper

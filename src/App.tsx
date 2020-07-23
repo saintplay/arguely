@@ -133,7 +133,7 @@ function App() {
 
   const getMainContent = () => {
     if (!activeThread) {
-      return <div>No se seleccionó nigún Chat</div>;
+      return <div>&nbsp;</div>;
     }
     return <ActiveChat activeThread={activeThread} />;
   };
